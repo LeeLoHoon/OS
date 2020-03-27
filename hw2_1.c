@@ -11,6 +11,11 @@ int buffer_size = 0;
 int buffer_pos = 0;
 //char master_string[100];
 char master_str[100];
+char temp[100];
+int core;
+char model[100];
+int memory;
+float  loadavg1, loadavg5, loadavg15;
 
 int main()
 {
@@ -18,11 +23,28 @@ int main()
     char Mstr[100];
     //ReadTextLine(Mfd,Mstr,10);
     while(1){
+		char dump1[20];
+		char dump2[20];
+
 		int t = ReadTextLine(Mfd,Mstr,100);
-        char *ptr = strtok(master_str, ":");
-	    printf("%s\n",ptr);
-	    ptr = strtok(NULL,"\n");
-	    printf("%s\n",ptr);
+        char *ptr = strtok(temp, ":");
+		printf("%s\n",ptr);
+		printf("%d\n",(int)strlen(ptr));
+		if(!strncmp("model name",ptr,10)){
+			ptr = strtok(NULL,"\n");
+			strcpy(model,ptr+1);
+			printf("!!!!!!!!!%s\n",model);
+	    	//break;
+		}
+		printf("%s\n",ptr);
+		if(!strncmp("cpu cores",ptr,9)){
+			sscanf(master_str,"%*s %*s %d",&core);
+			printf("%d\n",core);
+			break;
+		
+		}
+		ptr = strtok(NULL,"\n");
+	    printf("%s\n",ptr+1);
 		//printf("%d\n",t);
 		if(t!=0) break;
     }
@@ -67,7 +89,7 @@ int ReadTextLine(int fd, char str[], int max_len)
     }
     str[j] = 0;
 	for(int i=0;i<j+1;i++) master_str[i]=str[i];
-
+	for(int s=0;s<j+1;s++) temp[s]=str[s];
     //printf("%s\n",str);
 
 	return ret;
