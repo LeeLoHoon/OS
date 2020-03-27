@@ -19,7 +19,11 @@ int main()
     //ReadTextLine(Mfd,Mstr,10);
     while(1){
 		int t = ReadTextLine(Mfd,Mstr,100);
-		printf("%d\n",t);
+        char *ptr = strtok(master_str, ":");
+	    printf("%s\n",ptr);
+	    ptr = strtok(NULL,"\n");
+	    printf("%s\n",ptr);
+		//printf("%d\n",t);
 		if(t!=0) break;
     }
 	printf("out\n");
@@ -64,10 +68,7 @@ int ReadTextLine(int fd, char str[], int max_len)
     str[j] = 0;
 	for(int i=0;i<j+1;i++) master_str[i]=str[i];
 
-    printf("%s\n",str);
-   	char *ptr = strtok(str, ":");
-	printf("%s\n",ptr);
-	ptr = strtok(NULL,"\n");
-	printf("%s\n",ptr);
+    //printf("%s\n",str);
+
 	return ret;
 }
