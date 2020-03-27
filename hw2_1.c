@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -8,14 +9,22 @@ int ReadTextLine(int fd, char str[], int max_len);
 char buffer[BUFFER_SIZE];
 int buffer_size = 0;
 int buffer_pos = 0;
+//char master_string[100];
+char master_str[100];
 
 int main()
 {
     int Mfd = open("/proc/cpuinfo",O_RDONLY);
     char Mstr[100];
     //ReadTextLine(Mfd,Mstr,10);
-    while(ReadTextLine(Mfd,Mstr,0)!=0);
-    return 0;
+    while(1){
+		int t = ReadTextLine(Mfd,Mstr,100);
+		printf("%d\n",t);
+		if(t!=0) break;
+    }
+	printf("out\n");
+	close(Mfd);
+	return 0;
 }
 
 int ReadTextLine(int fd, char str[], int max_len)
@@ -53,6 +62,12 @@ int ReadTextLine(int fd, char str[], int max_len)
         }
     }
     str[j] = 0;
+	for(int i=0;i<j+1;i++) master_str[i]=str[i];
+
     printf("%s\n",str);
-    return ret;
+   	char *ptr = strtok(str, ":");
+	printf("%s\n",ptr);
+	ptr = strtok(NULL,"\n");
+	printf("%s\n",ptr);
+	return ret;
 }
