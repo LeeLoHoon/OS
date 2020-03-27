@@ -51,7 +51,7 @@ int main()
     int Mfd = open("/proc/meminfo",O_RDONLY);
 	ReadTextLine(Mfd,Mstr,100);
     sscanf(master_str,"%*s %d",&memory);
-    printf("%d",memory);
+    printf("%d\n",memory);
     close(Mfd);
 
     int Lfd = open("/proc/loadavg",O_RDONLY);
