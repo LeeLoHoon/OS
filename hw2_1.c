@@ -19,18 +19,18 @@ float  loadavg1, loadavg5, loadavg15;
 
 int main()
 {
-    int Mfd = open("/proc/cpuinfo",O_RDONLY);
+    int Cfd = open("/proc/cpuinfo",O_RDONLY);
     char Mstr[100];
-    //ReadTextLine(Mfd,Mstr,10);
+    //ReadTextLine(Cfd,Mstr,10);
     while(1){
 		char dump1[20];
 		char dump2[20];
 
-		int t = ReadTextLine(Mfd,Mstr,100);
+		int t = ReadTextLine(Cfd,Mstr,100);
         char *ptr = strtok(temp, ":");
 		printf("%s\n",ptr);
 		printf("%d\n",(int)strlen(ptr));
-        
+
         if(!strncmp("cpu cores",ptr,9)){
 			sscanf(master_str,"%*s %*s %*s %d",&core);
 			printf("@@@@@@@@@@%d\n",core);
@@ -46,8 +46,22 @@ int main()
 
     }
 	printf("out\n");
-	close(Mfd);
-	int 
+	close(Cfd);
+    
+    int Mfd = open("/proc/meminfo",O_RDONLY);
+	ReadTextLine(Mfd,Mstr,100);
+    sscanf(master_str,"%*s %d",&memory);
+    printf("%d",memory);
+    close(Mfd);
+
+    int Lfd = open("/proc/loadavg",O_RDONLY);
+	ReadTextLine(Lfd,Mstr,100);
+    sscanf(master_str,"%f %f %f",&loadavg1,&loadavg5,&loadavg15);
+    printf("%f\n",loadavg1);
+    printf("%f\n",loadavg5);
+    printf("%f\n",loadavg15);
+    close(Lfd);
+
 	return 0;
 }
 
