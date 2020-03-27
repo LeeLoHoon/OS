@@ -9,7 +9,6 @@ int ReadTextLine(int fd, char str[], int max_len);
 char buffer[BUFFER_SIZE];
 int buffer_size = 0;
 int buffer_pos = 0;
-//char master_string[100];
 char master_str[100];
 char temp[100];
 int core;
@@ -19,48 +18,37 @@ float  loadavg1, loadavg5, loadavg15;
 
 int main()
 {
-    int Cfd = open("/proc/cpuinfo",O_RDONLY);
     char Mstr[100];
-    //ReadTextLine(Cfd,Mstr,10);
+    int Cfd = open("/proc/cpuinfo",O_RDONLY);
     while(1){
-		char dump1[20];
-		char dump2[20];
-
 		int t = ReadTextLine(Cfd,Mstr,100);
         char *ptr = strtok(temp, ":");
-		printf("%s\n",ptr);
-		printf("%d\n",(int)strlen(ptr));
 
         if(!strncmp("cpu cores",ptr,9)){
 			sscanf(master_str,"%*s %*s %*s %d",&core);
-			printf("@@@@@@@@@@%d\n",core);
 			break;
 		}
 		if(!strncmp("model name",ptr,10)){
 			ptr = strtok(NULL,"\n");
 			strcpy(model,ptr+1);
-			printf("!!!!!!!!!%s\n",model);
-	    	//break;
 		}
-		//printf("%s\n",ptr);
-
     }
-	printf("out\n");
 	close(Cfd);
     
     int Mfd = open("/proc/meminfo",O_RDONLY);
 	ReadTextLine(Mfd,Mstr,100);
     sscanf(master_str,"%*s %d",&memory);
-    printf("%d\n",memory);
     close(Mfd);
 
     int Lfd = open("/proc/loadavg",O_RDONLY);
 	ReadTextLine(Lfd,Mstr,100);
     sscanf(master_str,"%f %f %f",&loadavg1,&loadavg5,&loadavg15);
-    printf("%f\n",loadavg1);
-    printf("%f\n",loadavg5);
-    printf("%f\n",loadavg15);
     close(Lfd);
+
+    printf("# of processor cores = %d\n",core);
+    printf("CPU model = %s\n",model);
+    printf("MemTotal = %d\n",memory);
+    printf("loadavg1 = %f, loadavg5 = %f, loadavd15 = %f\n",loadavg1,loadavg5,loadavg15);
 
 	return 0;
 }
@@ -102,7 +90,6 @@ int ReadTextLine(int fd, char str[], int max_len)
     str[j] = 0;
 	for(int i=0;i<j+1;i++) master_str[i]=str[i];
 	for(int s=0;s<j+1;s++) temp[s]=str[s];
-    //printf("%s\n",str);
 
 	return ret;
 }
