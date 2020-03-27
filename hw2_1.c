@@ -30,23 +30,20 @@ int main()
         char *ptr = strtok(temp, ":");
 		printf("%s\n",ptr);
 		printf("%d\n",(int)strlen(ptr));
+        
+        if(!strncmp("cpu cores",ptr,9)){
+			sscanf(master_str,"%*s %*s %d",&core);
+			printf("%d\n",core);
+			break;
+		}
 		if(!strncmp("model name",ptr,10)){
 			ptr = strtok(NULL,"\n");
 			strcpy(model,ptr+1);
 			printf("!!!!!!!!!%s\n",model);
 	    	//break;
 		}
-		printf("%s\n",ptr);
-		if(!strncmp("cpu cores",ptr,9)){
-			sscanf(master_str,"%*s %*s %d",&core);
-			printf("%d\n",core);
-			break;
-		
-		}
-		ptr = strtok(NULL,"\n");
-	    printf("%s\n",ptr+1);
-		//printf("%d\n",t);
-		if(t!=0) break;
+		//printf("%s\n",ptr);
+
     }
 	printf("out\n");
 	close(Mfd);
