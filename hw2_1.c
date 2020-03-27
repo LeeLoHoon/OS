@@ -32,8 +32,8 @@ int main()
 		printf("%d\n",(int)strlen(ptr));
         
         if(!strncmp("cpu cores",ptr,9)){
-			sscanf(master_str,"%*s %*s %d",&core);
-			printf("%d\n",core);
+			sscanf(master_str,"%*s %*s %*s %d",&core);
+			printf("@@@@@@@@@@%d\n",core);
 			break;
 		}
 		if(!strncmp("model name",ptr,10)){
@@ -47,6 +47,7 @@ int main()
     }
 	printf("out\n");
 	close(Mfd);
+	int 
 	return 0;
 }
 
