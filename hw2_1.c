@@ -63,7 +63,7 @@ int ReadTextLine(int fd, char str[], int max_len)
     int i = 0;
     int j = 0;
     int ret = 0;
-    
+
     if (lseek(fd, 0, SEEK_CUR) == 0)
         buffer_pos = buffer_size = 0;
     while (j < max_len - 1)

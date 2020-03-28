@@ -57,14 +57,14 @@ void ParseCommand(char *command, int *argc, char *argv[])
     command[len] = 0;
     for (int i = 0; i < len + 1; i++)
     {
-        if (command[i] == '"')
+        if (command[i] == '"' || command[i] == '\'')
         {
             command[i] = 0;
             argv[n] = command + i + 1;
             n++;
             for (j = i; j < len; j++)
             {
-                if (command[j] == '"')
+                if (command[j] == '"' || command[j] == '\'')
                 {
                     command[j] = 0;
                     i = j;
@@ -87,7 +87,7 @@ void ParseCommand(char *command, int *argc, char *argv[])
             n++;
             for (j = i + 1; j < len + 1; j++)
             {
-                if (command[j] == ' ' || command[j] == '"' || command[j] == 0)
+                if (command[j] == ' ' || command[j] == '"' || command[j] == '\'' || command[j] == 0)
                 {
                     i = j - 1;
                     break;
