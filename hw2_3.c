@@ -4,7 +4,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
-
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define MAX_CMD 2048
 #define MAX_ARG 256
@@ -26,13 +27,17 @@ int main()
             break;
         ParseCommand(command, &argc, argv);
         pid = fork();
-        if(pid<0){
+        if (pid < 0)
+        {
             fprintf(stderr, "fork failed\n");
             exit(-1);
         }
-        else if(pid==0){
-            execvp(argv[0],argv);
-        }else{
+        else if (pid == 0)
+        {
+            execvp(argv[0], argv);
+        }
+        else
+        {
             wait(NULL);
             //printf("Child Completed\n");
             //exit(0);
@@ -42,44 +47,53 @@ int main()
     return 0;
 }
 
-void ParseCommand(char *command, int *argc, char *argv[]){
+void ParseCommand(char *command, int *argc, char *argv[])
+{
 
-    int j=0;
-    int n=0;
-    int temp=0;
+    int j = 0;
+    int n = 0;
+    int temp = 0;
     int len = strlen(command);
-    command[len]=0;
-    for(int i=0;i<len+1;i++){
-        if(command[i]=='"'){
-            command[i]=0;
-            argv[n]=command+i+1;
+    command[len] = 0;
+    for (int i = 0; i < len + 1; i++)
+    {
+        if (command[i] == '"')
+        {
+            command[i] = 0;
+            argv[n] = command + i + 1;
             n++;
-            for(j=i;j<len;j++){
-                if(command[j]=='"'){
-                    command[j]=0;
-                    i=j;
+            for (j = i; j < len; j++)
+            {
+                if (command[j] == '"')
+                {
+                    command[j] = 0;
+                    i = j;
                     break;
                 }
             }
         }
-        else if(command[i]==' '){
-            command[i]=0;
+        else if (command[i] == ' ')
+        {
+            command[i] = 0;
         }
-        else if(command[i]==0){
-            argv[n]=0;
+        else if (command[i] == 0)
+        {
+            argv[n] = 0;
             break;
         }
-        else{
-            argv[n]=command+i;
+        else
+        {
+            argv[n] = command + i;
             n++;
-            for(j=i+1;j<len+1;j++){
-                if(command[j]==' ' || command[j]=='"' || command[j]==0){
-                    i=j-1;
+            for (j = i + 1; j < len + 1; j++)
+            {
+                if (command[j] == ' ' || command[j] == '"' || command[j] == 0)
+                {
+                    i = j - 1;
                     break;
                 }
             }
         }
     }
-    *argc=n;
-    
+    *argc = n;
 }
