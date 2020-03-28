@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -30,11 +31,11 @@ int main()
             exit(-1);
         }
         else if(pid==0){
-            execvp("/bin",argv);
+            execvp(argv[0],argv);
         }else{
             wait(NULL);
-            printf("Child Completed\n");
-            exit(0);
+            //printf("Child Completed\n");
+            //exit(0);
         }
     }
     printf("Bye!\n");

@@ -11,4 +11,4 @@ c	:	ct.o
 ct.o	:	hw2_3.c
 	gcc	-c	-o	ct.o	hw2_3.c	
 clean	:
-	rm	*.o	c
+	rm	*.o	a b c
