@@ -9,59 +9,61 @@ int ReadTextLine(int fd, char str[], int max_len);
 char buffer[BUFFER_SIZE];
 int buffer_size = 0;
 int buffer_pos = 0;
-char master_str[100];
 char temp[100];
 int core;
 char model[100];
 int memory;
-float  loadavg1, loadavg5, loadavg15;
+float loadavg1, loadavg5, loadavg15;
 
 int main()
 {
     char Mstr[100];
-    int Cfd = open("/proc/cpuinfo",O_RDONLY);
-    while(1){
-		int t = ReadTextLine(Cfd,Mstr,100);
-        for(int i=0;i<strlen(Mstr);i++) temp[i]=Mstr[i];
- 
+    int Cfd = open("/proc/cpuinfo", O_RDONLY);
+    while (1)
+    {
+        int t = ReadTextLine(Cfd, Mstr, 100);
+        for (int i = 0; i < strlen(Mstr); i++)
+            temp[i] = Mstr[i];
+
         char *ptr = strtok(temp, ":");
 
-        if(!strncmp("cpu cores",ptr,9)){
-			sscanf(Mstr,"%*s %*s %*s %d",&core);
-			break;
-		}
-		if(!strncmp("model name",ptr,10)){
-			ptr = strtok(NULL,"\n");
-			strcpy(model,ptr+1);
-		}
+        if (!strncmp("cpu cores", ptr, 9))
+        {
+            sscanf(Mstr, "%*s %*s %*s %d", &core);
+            break;
+        }
+        if (!strncmp("model name", ptr, 10))
+        {
+            ptr = strtok(NULL, "\n");
+            strcpy(model, ptr + 1);
+        }
     }
-	close(Cfd);
-    
-    int Mfd = open("/proc/meminfo",O_RDONLY);
-	ReadTextLine(Mfd,Mstr,100);
-    sscanf(Mstr,"%*s %d",&memory);
+    close(Cfd);
+
+    int Mfd = open("/proc/meminfo", O_RDONLY);
+    ReadTextLine(Mfd, Mstr, 100);
+    sscanf(Mstr, "%*s %d", &memory);
     close(Mfd);
 
-    int Lfd = open("/proc/loadavg",O_RDONLY);
-	ReadTextLine(Lfd,Mstr,100);
-    sscanf(Mstr,"%f %f %f",&loadavg1,&loadavg5,&loadavg15);
+    int Lfd = open("/proc/loadavg", O_RDONLY);
+    ReadTextLine(Lfd, Mstr, 100);
+    sscanf(Mstr, "%f %f %f", &loadavg1, &loadavg5, &loadavg15);
     close(Lfd);
 
-    printf("# of processor cores = %d\n",core);
-    printf("CPU model = %s\n",model);
-    printf("MemTotal = %d\n",memory);
-    printf("loadavg1 = %f, loadavg5 = %f, loadavd15 = %f\n",loadavg1,loadavg5,loadavg15);
+    printf("# of processor cores = %d\n", core);
+    printf("CPU model = %s\n", model);
+    printf("MemTotal = %d\n", memory);
+    printf("loadavg1 = %f, loadavg5 = %f, loadavd15 = %f\n", loadavg1, loadavg5, loadavg15);
 
-	return 0;
+    return 0;
 }
 
 int ReadTextLine(int fd, char str[], int max_len)
 {
-
     int i = 0;
     int j = 0;
     int ret = 0;
-    // if current position is 0, reset buffer size and pos
+    
     if (lseek(fd, 0, SEEK_CUR) == 0)
         buffer_pos = buffer_size = 0;
     while (j < max_len - 1)
@@ -90,5 +92,5 @@ int ReadTextLine(int fd, char str[], int max_len)
         }
     }
     str[j] = 0;
-	return ret;
+    return ret;
 }
