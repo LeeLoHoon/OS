@@ -22,10 +22,12 @@ int main()
     int Cfd = open("/proc/cpuinfo",O_RDONLY);
     while(1){
 		int t = ReadTextLine(Cfd,Mstr,100);
+        for(int i=0;i<strlen(Mstr);i++) temp[i]=Mstr[i];
+ 
         char *ptr = strtok(temp, ":");
 
         if(!strncmp("cpu cores",ptr,9)){
-			sscanf(master_str,"%*s %*s %*s %d",&core);
+			sscanf(Mstr,"%*s %*s %*s %d",&core);
 			break;
 		}
 		if(!strncmp("model name",ptr,10)){
@@ -37,12 +39,12 @@ int main()
     
     int Mfd = open("/proc/meminfo",O_RDONLY);
 	ReadTextLine(Mfd,Mstr,100);
-    sscanf(master_str,"%*s %d",&memory);
+    sscanf(Mstr,"%*s %d",&memory);
     close(Mfd);
 
     int Lfd = open("/proc/loadavg",O_RDONLY);
 	ReadTextLine(Lfd,Mstr,100);
-    sscanf(master_str,"%f %f %f",&loadavg1,&loadavg5,&loadavg15);
+    sscanf(Mstr,"%f %f %f",&loadavg1,&loadavg5,&loadavg15);
     close(Lfd);
 
     printf("# of processor cores = %d\n",core);
@@ -88,8 +90,5 @@ int ReadTextLine(int fd, char str[], int max_len)
         }
     }
     str[j] = 0;
-	for(int i=0;i<j+1;i++) master_str[i]=str[i];
-	for(int s=0;s<j+1;s++) temp[s]=str[s];
-
 	return ret;
 }
