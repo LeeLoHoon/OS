@@ -4,6 +4,10 @@
 #include <fcntl.h>
 #include <sys/shm.h>
 #include <sys/stat.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
 int main(){
 
