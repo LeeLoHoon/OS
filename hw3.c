@@ -129,7 +129,7 @@ void *receiver(void *param)
                 //perror("msgrcv() 실패");
     
             }
-        else printf("           %s\n",data.buff);
+        else printf("               [incomming] %s\n",data.buff);
 
 
         usleep(1000);
