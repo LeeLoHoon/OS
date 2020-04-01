@@ -17,7 +17,7 @@ void *sender(void *);
 int main(int argc, char *argv[])
 {
 
-    void* sqid, *rqid;
+    key_t sqid, rqid;
     pthread_t stid, rtid;
     pthread_attr_t sattr, rattr;
 
@@ -35,14 +35,14 @@ int main(int argc, char *argv[])
     
 
      sqid = msgget(atoi(argv[1]), IPC_CREAT | 0666);
-    if (sqid == -1)
+    if ((int)sqid == -1)
     {
         perror("msgget error : ");
         exit(0);
     }
 
     rqid = msgget(atoi(argv[2]), IPC_CREAT | 0666);
-    if (rqid == -1)
+    if ((int)rqid == -1)
     {
         perror("msgget error : ");
         exit(0);
