@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
      pthread_attr_init(&sattr);
     // pthread_attr_init(&rattr);
     printf("2222222222222222");
-    pthread_create(&stid, &sattr, sender, sqid);
+    pthread_create(&stid, &sattr, sender, (void*)sqid);
     // pthread_create(&rtid, &rattr, receiver, rqid);
     printf("333333333333333333");
     pthread_join(stid, NULL);
@@ -81,7 +81,6 @@ void *sender(void *param)
                 perror("msgsnd() 실패");
                 exit(1);
             }
-            sleep(1);
         }
     }
     repeat_receiver = 1;
