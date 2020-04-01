@@ -11,7 +11,7 @@
 
 typedef struct {
     int   msgid;
-    int   type;
+    long   type;
     char  buff[BUFFER_SIZE];
 } t_data;
 
@@ -72,26 +72,30 @@ int main(int argc, char *argv[])
 
 void *sender(void *param)
 {
-    data.type=0;
-    data.msgid=0;
     
     while (strcmp(string_buffer, "quit") != 0)
     {
+    
         printf("[msg] ");
         fgets(string_buffer, sizeof(string_buffer), stdin);
         string_buffer[strlen(string_buffer) - 1] = '\0';
+        data.type=0;
+        data.msgid=0;
         sprintf(data.buff,string_buffer,data.type,ndex);
+
+
 
         if (strcmp(string_buffer, "quit") == 0)
         {
             printf("aaaaaa\n");
             pthread_exit(0);
         }
-         if (msgsnd(atoi(param),&data, (sizeof(t_data)-sizeof(long)), 0)==-1)
+         if (msgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(int)),0)==-1)
             {
                 perror("msgsnd() 실패");
                 exit(1);
             }
+            else printf("godd");
         
     }
     repeat_receiver = 1;
