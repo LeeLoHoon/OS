@@ -78,11 +78,11 @@ void *sender(void *param)
     {
     
         printf("[msg] ");
-        fgets(string_buffer, sizeof(string_buffer), stdin);
-        string_buffer[strlen(string_buffer) - 1] = '\0';
+        fgets(string_buffer, BUFFER_SIZE, stdin);
+        //string_buffer[strlen(string_buffer) - 1] = '\0';
         printf("%d\n",(int)strlen(string_buffer));
         data.type=0;
-        sprintf(data.buff,string_buffer);
+        strcpy(data.buff,string_buffer);
 
         printf("%s\n",data.buff);
 
@@ -124,7 +124,7 @@ void *receiver(void *param)
 
         printf("%s\n",data.buff);
         fflush(stderr);
-        usleep(1000);
+        //usleep(1000);
 
     }
     pthread_exit(0);
