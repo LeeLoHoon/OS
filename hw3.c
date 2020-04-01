@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -16,7 +17,7 @@ void *sender(void *);
 int main(int argc, char *argv[])
 {
 
-    key_t sqid, rqid;
+    void* sqid, *rqid;
     pthread_t stid, rtid;
     pthread_attr_t sattr, rattr;
 
