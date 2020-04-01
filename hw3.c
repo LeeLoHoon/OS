@@ -12,7 +12,7 @@
 int repeat_receiver = 1;
 char string_buffer[BUFFER_SIZE];
 void *receiver(void *);
-void *sender(key_t);
+void *sender(void *);
 
 int main(int argc, char *argv[])
 {
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void *sender(key_t param)
+void *sender(void *param)
 {
 
     while (strcmp(string_buffer, "quit") == 0)
