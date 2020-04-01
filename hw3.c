@@ -34,14 +34,14 @@ int main(int argc, char *argv[])
 
     
 
-     sqid = msgget(atoi(argv[1]), IPC_CREAT | 0666);
+     sqid = msgget((key_t)argv[1], IPC_CREAT | 0666);
     // if (sqid == -1)
     // {
     //     perror("msgget error : ");
     //     exit(0);
     // }
 
-    rqid = msgget(atoi(argv[2]), IPC_CREAT | 0666);
+    rqid = msgget((key_t)argv[2], IPC_CREAT | 0666);
     // if (rqid == -1)
     // {
     //     perror("msgget error : ");
