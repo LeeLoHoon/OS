@@ -9,14 +9,20 @@
 
 #define BUFFER_SIZE 512
 
+typedef struct {
+    int   msgid;
+    long  type;
+    char  buff[BUFFER_SIZE];
+} t_data;
+
 int repeat_receiver = 1;
 char string_buffer[BUFFER_SIZE];
+t_data data;
 void *receiver(void *);
 void *sender(void *);
 
 int main(int argc, char *argv[])
 {
-
     int sqid, rqid;
     pthread_t stid, rtid;
     pthread_attr_t sattr, rattr;
@@ -63,6 +69,7 @@ int main(int argc, char *argv[])
 
 void *sender(void *param)
 {
+    
 
     while (strcmp(string_buffer, "quit") != 0)
     {
@@ -74,7 +81,7 @@ void *sender(void *param)
             printf("aaaaaa\n");
             pthread_exit(0);
         }
-         if (-1 == msgsnd(atoi(param),string_buffer,0,0))
+         if (msgsnd(atoi(param),&data, (sizeof(t_data)-sizeof(long)), 0)==-1)
             {
                 perror("msgsnd() 실패");
                 exit(1);
@@ -90,7 +97,7 @@ void *receiver(void *param)
 
     while (repeat_receiver == 1)
     {
-        if (-1 == msgrcv(atoi(param),string_buffer,BUFFER_SIZE,0,IPC_NOWAIT))
+        if (msgrcv(atoi(param), &data, sizeof(t_data)-sizeof(long), 1, IPC_NOWAIT) == -1)
             {
                 perror("msgrcv() 실패");
                 exit(1);
