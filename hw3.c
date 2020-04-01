@@ -91,6 +91,7 @@ void *sender(void *param)
         if (strcmp(string_buffer, "quit") == 0)
         {
             printf("aaaaaa\n");
+            repeat_receiver = 1;
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
@@ -105,11 +106,9 @@ void *sender(void *param)
 
         printf("Suceess\n");
         //pthread_mutex_unlock(&mutex);
-        fflush(stderr);
+        //fflush(stderr);
         
     }
-    repeat_receiver = 1;
-    pthread_exit(0);
 }
 
 void *receiver(void *param)
@@ -127,9 +126,10 @@ void *receiver(void *param)
 
         if (ret== -1)
             {
-                perror("msgrcv() 실패");
+                //perror("msgrcv() 실패");
     
             }
+        else printf("s\n",data.buff);
 
 
         usleep(1000);
