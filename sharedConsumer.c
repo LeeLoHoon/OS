@@ -24,7 +24,8 @@ int main(){
 
     const int SIZE = 4096;
     const char *name = "OSS";
-    char chat[20];
+    char chat[20]="";
+    char ch[20];
     int shm_fd;
 
     entire *ptr;
@@ -35,12 +36,16 @@ int main(){
     ptr = mmap(0,sizeof(entire), PROT_WRITE, MAP_SHARED,  shm_fd,0);
     while(1){
         while(ptr->in==ptr->out);
-        strcpy(chat,ptr->item[ptr->out]);
-        ptr->out = ((ptr->out)+1)%BUFFER_SIZE;
+        fgets(ch,sizeof(ch),stdin);
+        ch[strlen(ch)-1]='\0';
+        if(strcmp(ch,"go")==0){
+            strcpy(chat,ptr->item[ptr->out]);
+            ptr->out = ((ptr->out)+1)%BUFFER_SIZE;
+        }
+   
         printf("%d\n",ptr->in);
         printf("%d\n",ptr->out);
         printf("%s\n",chat);
-
     }
 
     shm_unlink(name);
