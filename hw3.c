@@ -96,8 +96,11 @@ void *sender(void *param)
                 perror("msgsnd() 실패");
                 exit(1);
             }
+
+
+        printf("Suceess\n");
         //pthread_mutex_unlock(&mutex);
-        
+        fflush(stderr);
         
     }
     repeat_receiver = 1;
@@ -118,7 +121,7 @@ void *receiver(void *param)
 
         printf("%s\n",data.buff);
         fflush(stderr);
-       usleep(1000);
+        usleep(1000);
 
     }
     pthread_exit(0);
