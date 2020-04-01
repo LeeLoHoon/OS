@@ -116,12 +116,12 @@ void *receiver(void *param)
 {
 
 
-    printf("%d",atoi(param));
+    //printf("%d",atoi(param));
 
     while (repeat_receiver == 1)
     {  
-         fflush(stderr);
-        if (msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 0, IPC_NOWAIT) == -1)
+        usleep(1000);
+        if (msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 0, 0) == -1)
             {
                 perror("msgrcv() 실패");
                 exit(1);
