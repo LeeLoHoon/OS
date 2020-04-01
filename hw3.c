@@ -72,12 +72,14 @@ void *sender(void *param)
         if (strcmp(string_buffer, "quit") == 0)
         {
             printf("aaaaaa\n");
-            if (-1 == msgsnd(atoi(param),string_buffer,0,0))
+            pthread_exit(0);
+        }
+         if (-1 == msgsnd(atoi(param),string_buffer,0,0))
             {
                 perror("msgsnd() 실패");
                 exit(1);
             }
-        }
+        
     }
     repeat_receiver = 1;
     pthread_exit(0);
