@@ -94,7 +94,7 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-        ret = msgsnd(*(int*)param,&data,(sizeof(t_data)-sizeof(long)),0);
+        ret = msgsnd(*(int*)param,&data,sizeof(t_data),0);
          if (ret== -1)
             {
                 printf("error\n");
