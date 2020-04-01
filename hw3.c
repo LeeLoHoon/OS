@@ -45,10 +45,14 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
+    printf("111111111111111");
+
     pthread_attr_init(&sattr);
     pthread_attr_init(&rattr);
+    printf("2222222222222222");
     pthread_create(&stid, &sattr, sender, sqid);
     pthread_create(&rtid, &rattr, receiver, rqid);
+    printf("333333333333333333");
     pthread_join(stid, NULL);
     pthread_join(rtid, NULL);
 
