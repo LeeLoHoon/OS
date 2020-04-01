@@ -94,7 +94,7 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-        ret = msgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(long)),0);
+        ret = msgsnd((int)param,&data,(sizeof(t_data)-sizeof(long)),0);
          if (ret== -1)
             {
                 printf("error\n");
@@ -121,7 +121,7 @@ void *receiver(void *param)
     while (repeat_receiver == 1)
     {  
          fflush(stderr);
-        if (msgrcv(atoi(param), &data, (sizeof(t_data)-sizeof(long)), 0, IPC_NOWAIT) == -1)
+        if (msgrcv((int)param, &data, (sizeof(t_data)-sizeof(long)), 0, IPC_NOWAIT) == -1)
             {
                 perror("msgrcv() 실패");
                 exit(1);
