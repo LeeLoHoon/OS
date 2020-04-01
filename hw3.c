@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     pthread_join(rtid, NULL);
 
     msgctl(sqid, IPC_RMID, 0);
-    msgctl(rqid, IPC_RMID, 0);
+    //msgctl(rqid, IPC_RMID, 0);
 
     return 0;
 }
