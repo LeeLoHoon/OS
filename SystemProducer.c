@@ -20,7 +20,7 @@ int main(){
 
     void *ptr;
     
-    shm_fd = shmget(IPC_PRIVATE,32,S_IRUSR|S_IWUSR);
+    shm_fd = shmget(IPC_PRIVATE,SIZE,S_IRUSR|S_IWUSR);
     
 
     ptr = shmat(shm_fd,NULL,0);
