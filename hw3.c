@@ -31,19 +31,21 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    sqid = msgget(atoi(argv[1]), IPC_CREAT | 0666);
-    if (sqid == -1)
-    {
-        perror("msgget error : ");
-        exit(0);
-    }
+    
 
-    rqid = msgget(atoi(argv[2]), IPC_CREAT | 0666);
-    if (rqid == -1)
-    {
-        perror("msgget error : ");
-        exit(0);
-    }
+    // sqid = msgget(atoi(argv[1]), IPC_CREAT | 0666);
+    // if (sqid == -1)
+    // {
+    //     perror("msgget error : ");
+    //     exit(0);
+    // }
+
+    // rqid = msgget(atoi(argv[2]), IPC_CREAT | 0666);
+    // if (rqid == -1)
+    // {
+    //     perror("msgget error : ");
+    //     exit(0);
+    // }
 
     printf("111111111111111");
 
@@ -53,11 +55,11 @@ int main(int argc, char *argv[])
     pthread_create(&stid, &sattr, sender, sqid);
     pthread_create(&rtid, &rattr, receiver, rqid);
     printf("333333333333333333");
-    //pthread_join(stid, NULL);
-    //pthread_join(rtid, NULL);
+    pthread_join(stid, NULL);
+    pthread_join(rtid, NULL);
 
-    //msgctl(sqid, IPC_RMID, 0);
-    //msgctl(rqid, IPC_RMID, 0);
+    // msgctl(sqid, IPC_RMID, 0);
+    // msgctl(rqid, IPC_RMID, 0);
 
     return 0;
 }
@@ -65,21 +67,21 @@ int main(int argc, char *argv[])
 void *sender(void *param)
 {
 
-    while (strcmp(string_buffer, "quit") == 0)
-    {
-        printf("[msg] ");
-        fgets(string_buffer, sizeof(string_buffer), stdin);
-        string_buffer[strlen(string_buffer) - 1] = '\0';
-        if (strcmp(string_buffer, "quit") == 1)
-        {
-            if (-1 == msgsnd(atoi(param),string_buffer,0,0))
-            {
-                perror("msgsnd() 실패");
-                exit(1);
-            }
-            sleep(1);
-        }
-    }
+    // while (strcmp(string_buffer, "quit") == 0)
+    // {
+    //     printf("[msg] ");
+    //     fgets(string_buffer, sizeof(string_buffer), stdin);
+    //     string_buffer[strlen(string_buffer) - 1] = '\0';
+    //     if (strcmp(string_buffer, "quit") == 1)
+    //     {
+    //         if (-1 == msgsnd(atoi(param),string_buffer,0,0))
+    //         {
+    //             perror("msgsnd() 실패");
+    //             exit(1);
+    //         }
+    //         sleep(1);
+    //     }
+    // }
     repeat_receiver = 1;
     pthread_exit(0);
 }
@@ -89,12 +91,12 @@ void *receiver(void *param)
 
     while (repeat_receiver == 1)
     {
-        if (-1 == msgrcv(atoi(param),string_buffer,BUFFER_SIZE,0,IPC_NOWAIT))
-            {
-                perror("msgrcv() 실패");
-                exit(1);
-            }
-       usleep(1000);
+    //     if (-1 == msgrcv(atoi(param),string_buffer,BUFFER_SIZE,0,IPC_NOWAIT))
+    //         {
+    //             perror("msgrcv() 실패");
+    //             exit(1);
+    //         }
+    //    usleep(1000);
 
     }
     pthread_exit(0);
