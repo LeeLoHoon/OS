@@ -86,7 +86,7 @@ void *sender(void *param)
         data.type=1;
         strcpy(data.buff,string_buffer);
 
-        printf("%s\n",data.buff);
+       // printf("%s\n",data.buff);
 
         if (strcmp(string_buffer, "quit") == 0)
         {
@@ -120,6 +120,7 @@ void *receiver(void *param)
 
     while (repeat_receiver == 1)
     {  
+		
         int ret=0;
     
         ret = msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 1, IPC_NOWAIT);
@@ -129,8 +130,10 @@ void *receiver(void *param)
                 //perror("msgrcv() 실패");
     
             }
-        else printf("               [incomming] %s\n",data.buff);
-
+        else {
+			printf("               [incomming] %s\n[msg] ",data.buff);
+			fflush(stdout);
+		}
 
         usleep(1000);
 
