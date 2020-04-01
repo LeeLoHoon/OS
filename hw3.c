@@ -10,13 +10,13 @@
 #define BUFFER_SIZE 512
 
 typedef struct {
-    long   type;
-    char  buff[BUFFER_SIZE];
+    long    type;
+    char    buff[BUFFER_SIZE];
 } t_data;
 
 int repeat_receiver = 1;
 char string_buffer[BUFFER_SIZE];
-int ndex = 0, num=0;
+int num=0;
 
 //pthread_mutex_t mutex =  PTHREAD_MUTEX_INITIALIZER;
 
@@ -77,13 +77,12 @@ void *sender(void *param)
     {
     
         printf("[msg] ");
-        memset(string_buffer,'\0',BUFFER_SIZE);
         fgets(string_buffer, sizeof(string_buffer), stdin);
         string_buffer[strlen(string_buffer) - 1] = '\0';
         data.type=0;
         sprintf(data.buff,string_buffer);
 
-        //printf("%s\n",data.buff);
+        printf("%s\n",data.buff);
 
         if (strcmp(string_buffer, "quit") == 0)
         {
@@ -91,7 +90,7 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-         if (msgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(int)),IPC_NOWAIT)==-1)
+         if (msgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(long)),IPC_NOWAIT)==-1)
             {
                 printf("error\n");
                 perror("msgsnd() 실패");
