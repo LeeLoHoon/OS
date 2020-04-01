@@ -42,14 +42,14 @@ int main(int argc, char *argv[])
 
     
 
-     sqid = msgget((key_t)argv[1], IPC_CREAT | 0666);
+     sqid = msgget((key_t)atoi(argv[1]), IPC_CREAT | 0666);
     if (sqid == -1)
     {
         perror("msgget error : ");
         exit(0);
     }
 
-    rqid = msgget((key_t)argv[2], IPC_CREAT | 0666);
+    rqid = msgget((key_t)atoi(argv[2]), IPC_CREAT | 0666);
     if (rqid == -1)
     {
         perror("msgget error : ");
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
     pthread_attr_init(&sattr);
     //pthread_attr_init(&rattr);
-    pthread_create(&stid, &sattr, sender, sqid);
+    pthread_create(&stid, &sattr, sender, &sqid);
     //pthread_create(&rtid, &rattr, receiver, rqid);
     pthread_join(stid, NULL);
     //pthread_join(rtid, NULL);
