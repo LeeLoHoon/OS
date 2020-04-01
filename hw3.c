@@ -91,11 +91,11 @@ void *sender(void *param)
         if (strcmp(string_buffer, "quit") == 0)
         {
             printf("aaaaaa\n");
-            repeat_receiver = 1;
+            repeat_receiver = 0;
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-        ret = msgsnd(*(int*)param,&data,sizeof(t_data),0);
+        ret = msgsnd(*(int*)param,&data,sizeof(t_data)-sizeof(long),0);
          if (ret== -1)
             {
                 printf("error\n");
@@ -129,7 +129,7 @@ void *receiver(void *param)
                 //perror("msgrcv() 실패");
     
             }
-        else printf("s\n",data.buff);
+        else printf("%s\n",data.buff);
 
 
         usleep(1000);
