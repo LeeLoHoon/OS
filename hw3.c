@@ -81,7 +81,7 @@ void *sender(void *param)
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
         string_buffer[strlen(string_buffer) - 1] = '\0';
-        printf("%d\n",(int)strlen(string_buffer));
+        //printf("%d\n",(int)strlen(string_buffer));
 
         data.type=1;
         strcpy(data.buff,string_buffer);
@@ -90,7 +90,7 @@ void *sender(void *param)
 
         if (strcmp(string_buffer, "quit") == 0)
         {
-            printf("aaaaaa\n");
+            //printf("aaaaaa\n");
             repeat_receiver = 0;
             pthread_exit(0);
         }
@@ -104,7 +104,7 @@ void *sender(void *param)
             }
 
 
-        printf("Suceess\n");
+        //printf("Suceess\n");
         //pthread_mutex_unlock(&mutex);
         //fflush(stderr);
         
@@ -129,7 +129,7 @@ void *receiver(void *param)
                 //perror("msgrcv() 실패");
     
             }
-        else printf("%s\n",data.buff);
+        else printf("           %s\n",data.buff);
 
 
         usleep(1000);
