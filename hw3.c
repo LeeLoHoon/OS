@@ -11,7 +11,7 @@
 
 typedef struct {
     int   msgid;
-    long  type;
+    int   type;
     char  buff[BUFFER_SIZE];
 } t_data;
 
@@ -80,7 +80,7 @@ void *sender(void *param)
         printf("[msg] ");
         fgets(string_buffer, sizeof(string_buffer), stdin);
         string_buffer[strlen(string_buffer) - 1] = '\0';
-        sprintf(data.buff,string_buffer);
+        sprintf(data.buff,string_buffer,data.type,ndex);
 
         if (strcmp(string_buffer, "quit") == 0)
         {
