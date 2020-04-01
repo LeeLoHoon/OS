@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 void *sender(void *param)
 {
     t_data data;
+    int ret=0;
     
     while (strcmp(string_buffer, "quit") != 0)
     {
@@ -90,7 +91,8 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-         if (msgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(long)),0)==-1)
+        ret = sgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(long)),0);
+         if (ret== -1)
             {
                 printf("error\n");
                 perror("msgsnd() 실패");
