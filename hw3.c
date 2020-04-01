@@ -12,7 +12,7 @@
 int repeat_receiver = 1;
 char string_buffer[BUFFER_SIZE];
 void *receiver(void *);
-void *sender(void *);
+void *sender(key_t);
 
 int main(int argc, char *argv[])
 {
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
      pthread_attr_init(&sattr);
     // pthread_attr_init(&rattr);
     printf("2222222222222222");
-    pthread_create(&stid, &sattr, sender, (void*)sqid);
+    pthread_create(&stid, &sattr, sender, sqid);
     // pthread_create(&rtid, &rattr, receiver, rqid);
     printf("333333333333333333");
     pthread_join(stid, NULL);
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void *sender(void *param)
+void *sender(key_t param)
 {
 
     while (strcmp(string_buffer, "quit") == 0)
