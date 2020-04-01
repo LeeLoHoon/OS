@@ -116,18 +116,25 @@ void *receiver(void *param)
 {
 
 
+    
     //printf("%d",atoi(param));
 
     while (repeat_receiver == 1)
     {  
-        usleep(1000);
-        if (msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 0, 0) == -1)
+        int ret=0;
+    
+        ret = msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 1, IPC_NOWAIT);
+
+        if (ret== -1)
             {
                 perror("msgrcv() 실패");
-                exit(1);
+    
             }
 
-        printf("%s\n",data.buff);
+
+        usleep(1000);
+
+        //printf("%s\n",data.buff);
         
         //usleep(1000);
 
