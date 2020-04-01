@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
 
     pthread_attr_init(&sattr);
     pthread_attr_init(&rattr);
-    pthread_create(&stid, &sattr, sender, &sqid);
-    pthread_create(&rtid, &rattr, receiver, &rqid);
+    pthread_create(&stid, &sattr, sender, &rqid);
+    pthread_create(&rtid, &rattr, receiver, &sqid);
     pthread_join(stid, NULL);
     pthread_join(rtid, NULL);
 
@@ -116,15 +116,16 @@ void *receiver(void *param)
     t_data data;
 
     while (repeat_receiver == 1)
-    {
-        if (msgrcv(atoi(param), &data, sizeof(t_data)-sizeof(long), 0, IPC_NOWAIT) == -1)
+    {  
+         fflush(stderr);
+        if (msgrcv(atoi(param), &data, (sizeof(t_data)-sizeof(long)), 0, IPC_NOWAIT) == -1)
             {
                 perror("msgrcv() 실패");
                 exit(1);
             }
 
         printf("%s\n",data.buff);
-        fflush(stderr);
+        
         //usleep(1000);
 
     }
