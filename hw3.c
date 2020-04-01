@@ -82,8 +82,8 @@ void *sender(void *param)
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
 
-        if(strcmp(string_buffer,"\n")) continue;
-        
+        if(strcmp(string_buffer,"\n")==0) continue;
+
         string_buffer[strlen(string_buffer) - 1] = '\0';
         //printf("%d\n",(int)strlen(string_buffer));
         
