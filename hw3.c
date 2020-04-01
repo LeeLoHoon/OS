@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 void *sender(void *param)
 {
 
-    while (strcmp(string_buffer, "quit") == 0)
+    while (strcmp(string_buffer, "quit") != 0)
     {
         printf("[msg] ");
         fgets(string_buffer, sizeof(string_buffer), stdin);
