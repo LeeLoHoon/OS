@@ -53,11 +53,11 @@ int main(int argc, char *argv[])
     pthread_create(&stid, &sattr, sender, sqid);
     pthread_create(&rtid, &rattr, receiver, rqid);
     printf("333333333333333333");
-    pthread_join(stid, NULL);
-    pthread_join(rtid, NULL);
+    //pthread_join(stid, NULL);
+    //pthread_join(rtid, NULL);
 
-    msgctl(sqid, IPC_RMID, 0);
-    msgctl(rqid, IPC_RMID, 0);
+    //msgctl(sqid, IPC_RMID, 0);
+    //msgctl(rqid, IPC_RMID, 0);
 
     return 0;
 }
