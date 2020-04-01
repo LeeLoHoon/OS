@@ -37,9 +37,12 @@ int main(){
         while(ptr->in==ptr->out);
         strcpy(chat,ptr->item[ptr->out]);
         ptr->out = ((ptr->out)+1)%BUFFER_SIZE;
+        printf("%d\n",ptr->in);
+        printf("%d\n",ptr->out);
+        printf("%s\n",chat);
 
     }
-    
+
     shm_unlink(name);
 
     return 0;
