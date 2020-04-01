@@ -17,6 +17,7 @@ typedef struct {
 int repeat_receiver = 1;
 char string_buffer[BUFFER_SIZE];
 int num=0;
+t_data data;
 
 //pthread_mutex_t mutex =  PTHREAD_MUTEX_INITIALIZER;
 
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
 
 void *sender(void *param)
 {
-    t_data data;
+
     int ret=0;
     
     while (strcmp(string_buffer, "quit") != 0)
@@ -113,7 +114,7 @@ void *sender(void *param)
 
 void *receiver(void *param)
 {
-    t_data data;
+
 
     printf("%d",atoi(param));
 
