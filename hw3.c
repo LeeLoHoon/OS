@@ -90,7 +90,7 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-         if (msgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(long)),IPC_NOWAIT)==-1)
+         if (msgsnd(atoi(param),&data,(sizeof(t_data)-sizeof(long)),0)==-1)
             {
                 printf("error\n");
                 perror("msgsnd() 실패");
