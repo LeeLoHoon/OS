@@ -83,7 +83,7 @@ void *sender(void *param)
         string_buffer[strlen(string_buffer) - 1] = '\0';
         printf("%d\n",(int)strlen(string_buffer));
 
-        data.type=0;
+        data.type=1;
         strcpy(data.buff,string_buffer);
 
         printf("%s\n",data.buff);
