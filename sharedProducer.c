@@ -11,6 +11,7 @@
 
 #define BUFFER_SIZE 6
 
+//-lrt
 
 
 typedef struct{

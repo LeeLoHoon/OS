@@ -6,6 +6,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #define BUFFER_SIZE 1024
 
@@ -109,6 +110,7 @@ void *sender(void *param)
         //fflush(stderr);
         
     }
+    return NULL;
 }
 
 void *receiver(void *param)
