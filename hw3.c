@@ -60,12 +60,12 @@ int main(int argc, char *argv[])
     pthread_attr_init(&sattr);
     pthread_attr_init(&rattr);
     pthread_create(&stid, &sattr, sender, sqid);
-    //pthread_create(&rtid, &rattr, receiver, rqid);
+    pthread_create(&rtid, &rattr, receiver, rqid);
     pthread_join(stid, NULL);
-    //pthread_join(rtid, NULL);
+    pthread_join(rtid, NULL);
 
     msgctl(sqid, IPC_RMID, 0);
-    //msgctl(rqid, IPC_RMID, 0);
+    msgctl(rqid, IPC_RMID, 0);
 
     return 0;
 }
@@ -95,7 +95,7 @@ void *sender(void *param)
                 perror("msgsnd() 실패");
                 exit(1);
             }
-            else printf("godd");
+            else fflush(stderr);
         
     }
     repeat_receiver = 1;
@@ -112,6 +112,8 @@ void *receiver(void *param)
                 perror("msgrcv() 실패");
                 exit(1);
             }
+
+        printf("%s\n",data.buff);
        usleep(1000);
 
     }
