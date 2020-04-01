@@ -50,16 +50,16 @@ int main(int argc, char *argv[])
 
     printf("111111111111111");
 
-    // pthread_attr_init(&sattr);
+     pthread_attr_init(&sattr);
     // pthread_attr_init(&rattr);
-    // printf("2222222222222222");
-    // pthread_create(&stid, &sattr, sender, sqid);
+    printf("2222222222222222");
+    pthread_create(&stid, &sattr, sender, sqid);
     // pthread_create(&rtid, &rattr, receiver, rqid);
-    // printf("333333333333333333");
-    // pthread_join(stid, NULL);
+    printf("333333333333333333");
+    pthread_join(stid, NULL);
     // pthread_join(rtid, NULL);
 
-    // msgctl(sqid, IPC_RMID, 0);
+    msgctl(sqid, IPC_RMID, 0);
     // msgctl(rqid, IPC_RMID, 0);
 
     return 0;
@@ -68,21 +68,22 @@ int main(int argc, char *argv[])
 void *sender(void *param)
 {
 
-    // while (strcmp(string_buffer, "quit") == 0)
-    // {
-    //     printf("[msg] ");
-    //     fgets(string_buffer, sizeof(string_buffer), stdin);
-    //     string_buffer[strlen(string_buffer) - 1] = '\0';
-    //     if (strcmp(string_buffer, "quit") == 1)
-    //     {
-    //         if (-1 == msgsnd(atoi(param),string_buffer,0,0))
-    //         {
-    //             perror("msgsnd() 실패");
-    //             exit(1);
-    //         }
-    //         sleep(1);
-    //     }
-    // }
+    while (strcmp(string_buffer, "quit") == 0)
+    {
+        printf("[msg] ");
+        fgets(string_buffer, sizeof(string_buffer), stdin);
+        string_buffer[strlen(string_buffer) - 1] = '\0';
+        if (strcmp(string_buffer, "quit") == 1)
+        {
+            printf("aaaaaa\n");
+            if (-1 == msgsnd(atoi(param),string_buffer,0,0))
+            {
+                perror("msgsnd() 실패");
+                exit(1);
+            }
+            sleep(1);
+        }
+    }
     repeat_receiver = 1;
     pthread_exit(0);
 }
