@@ -64,7 +64,7 @@ void *sender(void *param)
     while (strcmp(string_buffer, "quit") == 0)
     {
         printf("[msg] ");
-        fgets(string_buffer, BUFFER_SIZE, stdin);
+        fgets(string_buffer, sizeof(string_buffer), stdin);
         string_buffer[strlen(string_buffer) - 1] = '\0';
         if (strcmp(string_buffer, "quit") == 1)
         {
@@ -83,7 +83,7 @@ void *sender(void *param)
 void *receiver(void *param)
 {
 
-    while (repeat_receiver = 1)
+    while (repeat_receiver == 1)
     {
         if (-1 == msgrcv(atoi(param),string_buffer,BUFFER_SIZE,0,IPC_NOWAIT))
             {
