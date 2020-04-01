@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
 
     pthread_attr_init(&sattr);
     pthread_attr_init(&rattr);
-    pthread_create(&stid, &sattr, sender, &rqid);
-    pthread_create(&rtid, &rattr, receiver, &sqid);
+    pthread_create(&stid, &sattr, sender, &sqid);
+    pthread_create(&rtid, &rattr, receiver, &rqid);
     pthread_join(stid, NULL);
     pthread_join(rtid, NULL);
 
@@ -114,6 +114,8 @@ void *sender(void *param)
 void *receiver(void *param)
 {
     t_data data;
+
+    printf("%d",atoi(param));
 
     while (repeat_receiver == 1)
     {  
