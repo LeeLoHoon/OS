@@ -18,7 +18,7 @@ typedef struct {
 int repeat_receiver = 1;
 char string_buffer[BUFFER_SIZE];
 t_data data;
-int index = 0, num=0;
+int ndex = 0, num=0;
 
 
 void *receiver(void *);
@@ -81,7 +81,7 @@ void *sender(void *param)
         fgets(string_buffer, sizeof(string_buffer), stdin);
         string_buffer[strlen(string_buffer) - 1] = '\0';
         sprintf(data.buff,string_buffer);
-        
+
         if (strcmp(string_buffer, "quit") == 0)
         {
             printf("aaaaaa\n");
