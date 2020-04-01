@@ -9,21 +9,34 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+
+#define BUFFER_SIZE 6
+
+
+
+typedef struct{
+    int in;
+    int out;
+    char item[6][20];
+}entire;
+
 int main(){
 
     const int SIZE = 4096;
-    const char *name = "OS";
+    const char *name = "OSS";
 
     int shm_fd;
 
-    void *ptr;
+    entire *ptr;
     
-    shm_fd = shm_open(name, O_RDONLY, 0666);
-    ftruncate(shm_fd, SIZE);
+    shm_fd = shm_open(name, O_RDWR, 0666);
+    ftruncate(shm_fd, sizeof(entire));
 
-    ptr = mmap(0,SIZE, PROT_READ, MAP_SHARED,  shm_fd,0);
-
-    printf("%s",(char *)ptr);
+    ptr = mmap(0,sizeof(entire), PROT_WRITE, MAP_SHARED,  shm_fd,0);
+    ptr->in--;
+    printf("%d\n",ptr->in);
+    printf("aaaa\n");
+    printf("%s",ptr->item[0]);
     shm_unlink(name);
 
     return 0;
