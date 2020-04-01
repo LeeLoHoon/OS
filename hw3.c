@@ -79,8 +79,7 @@ void *sender(void *param)
         printf("[msg] ");
         memset(string_buffer,'\0',BUFFER_SIZE);
         fgets(string_buffer, sizeof(string_buffer), stdin);
-        *(string_buffer+(strlen(string_buffer-1)))='\0';
-        //string_buffer[strlen(string_buffer) - 1] = '\0';
+        string_buffer[strlen(string_buffer) - 1] = '\0';
         data.type=0;
         sprintf(data.buff,string_buffer);
 
