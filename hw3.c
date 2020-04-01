@@ -57,14 +57,14 @@ int main(int argc, char *argv[])
     }
 
     pthread_attr_init(&sattr);
-    //pthread_attr_init(&rattr);
+    pthread_attr_init(&rattr);
     pthread_create(&stid, &sattr, sender, sqid);
-    //pthread_create(&rtid, &rattr, receiver, rqid);
+    pthread_create(&rtid, &rattr, receiver, rqid);
     pthread_join(stid, NULL);
-    //pthread_join(rtid, NULL);
+    pthread_join(rtid, NULL);
 
     msgctl(sqid, IPC_RMID, 0);
-    //msgctl(rqid, IPC_RMID, 0);
+    msgctl(rqid, IPC_RMID, 0);
 
     return 0;
 }
