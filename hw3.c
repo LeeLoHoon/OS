@@ -138,10 +138,10 @@ void *receiver(void *param)
             }
         else {
 			printf("               [incomming] %s\n[msg] ",data.buff);
-			fflush(stdout);
+			//fflush(stdout);
 		}
 
-        usleep(1000);
+        //usleep(1000);
 
         //printf("%s\n",data.buff);
         
