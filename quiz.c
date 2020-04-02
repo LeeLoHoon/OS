@@ -88,9 +88,9 @@ void parent(int shm_id)
 	}
 
 	// hint: put some code here
-	printf("not detach\n");
+	// printf("not detach\n");
 	shmdt(buffer);
-	printf("detach\n");
+	// printf("detach\n");
 	printf("[parent] Terminating.\n");
 	fflush(stdout);
 }
@@ -126,11 +126,11 @@ void child(int shm_id)
 		if (strcmp(buffer->message, "quit") == 0)
 			break;
 	}
-	printf("not detach\n");
+	// printf("not detach\n");
 
 	shmdt(buffer);
 
-	printf("detach\n");
+	// printf("detach\n");
 
 
 	// hint: put some code here
