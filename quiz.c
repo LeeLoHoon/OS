@@ -54,10 +54,8 @@ int main(int argc, char* argv[0])
 	}
 
 	//Deallocating
-	sleep(4);
-	printf("not deallocating\n");
+	sleep(1);
 	shmctl(shm_id, IPC_RMID, NULL);
-	printf("deallocating\n");
 	return 0;
 }
 
