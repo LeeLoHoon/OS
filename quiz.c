@@ -23,7 +23,7 @@ Buffer global_buffer;
 void parent(int shm_id); // function for the parent
 void child(int shm_id);	 // function for the child
 
-int main(int argc, char* argv[0])
+int main(int argc, char *argv[0])
 {
 	int shm_id = 0;
 
@@ -50,12 +50,12 @@ int main(int argc, char* argv[0])
 	{
 		// child
 		child(shm_id);
-
 	}
 
 	//Deallocating
 	sleep(1);
 	shmctl(shm_id, IPC_RMID, NULL);
+	
 	return 0;
 }
 
@@ -105,11 +105,6 @@ void child(int shm_id)
 	Buffer *buffer; // hint: modify this line
 
 	buffer = shmat(shm_id, NULL, 0);
-	// if ((buffer = shmat(shm_id, NULL, 0)) == -1)
-	// {
-	// 	printf("매핑 실패\n");
-	// 	//exit(0);
-	// }
 
 	while (1)
 	{
@@ -126,14 +121,12 @@ void child(int shm_id)
 		if (strcmp(buffer->message, "quit") == 0)
 			break;
 	}
-	// printf("not detach\n");
-
-	shmdt(buffer);
-
-	// printf("detach\n");
-
-
+	
 	// hint: put some code here
+
+	// printf("not detach\n");
+	shmdt(buffer);
+	// printf("detach\n");
 
 	printf("[child] Terminating.\n");
 	fflush(stdout);
