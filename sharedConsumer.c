@@ -46,6 +46,7 @@ int main(){
         printf("%d\n",ptr->in);
         printf("%d\n",ptr->out);
         printf("%s\n",chat);
+        fflush(stdout);
     }
 
     shm_unlink(name);

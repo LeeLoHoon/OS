@@ -48,15 +48,16 @@ int main(){
         chat[strlen(chat)-1]='\0';
         strcpy(ptr->item[ptr->in],chat);
         ptr->in = ((ptr->in)+1)%BUFFER_SIZE;
+        printf("%n",ptr->item[(ptr->in)-1]);
+        printf("%d\n",ptr->in);
+        printf("%d\n",ptr->out);
+        fflush(stdout);
+
     }
 
 
 
-
-    sprintf(ptr->item[ptr->in], "%s", message_0);
-    printf("%s\n",ptr->item[ptr->in]);
-    ptr->in++;
-    printf("%d\n",ptr->in);
+   
 
     return 0;
 }
