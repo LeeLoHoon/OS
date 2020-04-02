@@ -50,13 +50,14 @@ int main(int argc, char* argv[0])
 	{
 		// child
 		child(shm_id);
+
 	}
 
 	//Deallocating
+	sleep(4);
 	printf("not deallocating\n");
 	shmctl(shm_id, IPC_RMID, NULL);
 	printf("deallocating\n");
-
 	return 0;
 }
 
