@@ -53,7 +53,9 @@ int main(int argc, char* argv[0])
 	}
 
 	//Deallocating
+	printf("not deallocating\n");
 	shmctl(shm_id, IPC_RMID, NULL);
+	printf("deallocating\n");
 
 	return 0;
 }
@@ -61,7 +63,7 @@ int main(int argc, char* argv[0])
 void parent(int shm_id)
 {
 
-	Buffer *buffer = &global_buffer; // hint: modify this line
+	Buffer *buffer; // hint: modify this line
 	buffer = shmat(shm_id, NULL, 0);
 	buffer->filled = 0;
 
@@ -87,8 +89,9 @@ void parent(int shm_id)
 	}
 
 	// hint: put some code here
+	printf("not detach\n");
 	shmdt(buffer);
-
+	printf("detach\n");
 	printf("[parent] Terminating.\n");
 	fflush(stdout);
 }
@@ -100,7 +103,7 @@ void child(int shm_id)
 	printf("[child] Started\n");
 	fflush(stdout);
 
-	Buffer *buffer = &global_buffer; // hint: modify this line
+	Buffer *buffer; // hint: modify this line
 
 	buffer = shmat(shm_id, NULL, 0);
 	// if ((buffer = shmat(shm_id, NULL, 0)) == -1)
@@ -124,8 +127,12 @@ void child(int shm_id)
 		if (strcmp(buffer->message, "quit") == 0)
 			break;
 	}
+	printf("not detach\n");
 
 	shmdt(buffer);
+
+	printf("detach\n");
+
 
 	// hint: put some code here
 
