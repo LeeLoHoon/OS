@@ -138,7 +138,7 @@ void *receiver(void *param)
             }
         else {
 			printf("               [incomming] %s\n[msg] ",data.buff);
-			//fflush(stdout);
+			fflush(stdout);
 		}
 
         //usleep(1000);
