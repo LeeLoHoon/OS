@@ -141,7 +141,7 @@ void *receiver(void *param)
 			fflush(stdout);
 		}
 
-        //usleep(1000);
+        usleep(100000);
 
         //printf("%s\n",data.buff);
         
