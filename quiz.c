@@ -23,7 +23,7 @@ Buffer global_buffer;
 void parent(int shm_id); // function for the parent
 void child(int shm_id);	 // function for the child
 
-int main(int argc, char argv[0])
+int main(int argc, char* argv[0])
 {
 	int shm_id = 0;
 
@@ -32,7 +32,7 @@ int main(int argc, char argv[0])
 	if ((shm_id = shmget((key_t)KEY, SIZE, IPC_CREAT | 0666)) == -1)
 	{
 		printf("메모리 생성 실패\n");
-		return -1;
+		//eixt(-1);
 	}
 
 	pid_t child_pid = fork();
@@ -62,12 +62,12 @@ void parent(int shm_id)
 {
 
 	Buffer *buffer = &global_buffer; // hint: modify this line
-
-	if ((buffer = shmat(shm_id, NULL, 0)) == -1)
-	{
-		printf("매핑 실패\n");
-		return -1;
-	}
+	buffer = shmat(shm_id, NULL, 0);
+	// if ((buffer = shmat(shm_id, NULL, 0)) == -1)
+	// {
+	// 	printf("매핑 실패\n");
+	// 	//exit(0);
+	// }
 
 	buffer->filled = 0;
 
@@ -108,12 +108,13 @@ void child(int shm_id)
 
 	Buffer *buffer = &global_buffer; // hint: modify this line
 
-	if ((buffer = shmat(shm_id, NULL, 0)) == -1)
-	{
-		printf("매핑 실패\n");
-		return -1;
-	}
-	
+	buffer = shmat(shm_id, NULL, 0);
+	// if ((buffer = shmat(shm_id, NULL, 0)) == -1)
+	// {
+	// 	printf("매핑 실패\n");
+	// 	//exit(0);
+	// }
+
 	while (1)
 	{
 		while (!buffer->filled)
