@@ -29,11 +29,11 @@ int main(int argc, char* argv[0])
 
 	// hint: allocate shared memory block for the shared buffer
 
-	if ((shm_id = shmget((key_t)KEY, SIZE, IPC_CREAT | 0666)) == -1)
-	{
-		printf("메모리 생성 실패\n");
-		return 0;
-	}
+	// if ((shm_id = shmget((key_t)KEY, SIZE, IPC_CREAT | 0666)) == -1)
+	// {
+	// 	printf("메모리 생성 실패\n");
+	// 	return 0;
+	// }
 
 	pid_t child_pid = fork();
 
@@ -62,7 +62,7 @@ void parent(int shm_id)
 {
 
 	Buffer *buffer = &global_buffer; // hint: modify this line
-	buffer = shmat(shm_id, NULL, 0);
+	// buffer = shmat(shm_id, NULL, 0);
 	buffer->filled = 0;
 
 	sleep(2); // wait for the child to start
@@ -87,7 +87,7 @@ void parent(int shm_id)
 	}
 
 	// hint: put some code here
-	shmdt(buffer);
+	// shmdt(buffer);
 
 	printf("[parent] Terminating.\n");
 	fflush(stdout);
@@ -102,7 +102,7 @@ void child(int shm_id)
 
 	Buffer *buffer = &global_buffer; // hint: modify this line
 
-	buffer = shmat(shm_id, NULL, 0);
+	// buffer = shmat(shm_id, NULL, 0);
 	// if ((buffer = shmat(shm_id, NULL, 0)) == -1)
 	// {
 	// 	printf("매핑 실패\n");
@@ -125,7 +125,7 @@ void child(int shm_id)
 			break;
 	}
 
-	shmdt(buffer);
+	// shmdt(buffer);
 
 	// hint: put some code here
 
