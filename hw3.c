@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
     msgctl(sqid, IPC_RMID, 0);
     msgctl(rqid, IPC_RMID, 0);
-    printf("deallocate\n");
+    //printf("deallocate\n");
     return 0;
 }
 
@@ -148,6 +148,6 @@ void *receiver(void *param)
         //usleep(1000);
 
     }
-    printf("receiver quit\n");
+    //printf("receiver quit\n");
     pthread_exit(0);
 }
