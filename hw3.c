@@ -76,7 +76,7 @@ void *sender(void *param)
 
     while (strcmp(string_buffer, "quit") != 0)
     {
-        fflush(stdin);
+        fflush(stdout);
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
 
