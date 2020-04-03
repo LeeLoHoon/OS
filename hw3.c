@@ -128,7 +128,9 @@ void *receiver(void *param)
     {  
 		
         int ret=0;
-    
+        
+        fflush(stdout);
+
         ret = msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 1, IPC_NOWAIT);
 
         if (ret== -1)
@@ -139,9 +141,10 @@ void *receiver(void *param)
         else {
 			printf("               [incomming] %s\n[msg] ",data.buff);
 			fflush(stdout);
+            usleep(1000);
 		}
 
-        usleep(1000);
+        
 
         //printf("%s\n",data.buff);
         
