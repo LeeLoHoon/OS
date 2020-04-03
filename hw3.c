@@ -100,7 +100,7 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-        usleep(1000);
+        sleep(1);
         ret = msgsnd(*(int*)param,&data,sizeof(t_data)-sizeof(long),0);
         
          if (ret== -1)
