@@ -119,6 +119,7 @@ void *receiver(void *param)
         if (ret != -1)
             printf("               [incomming] %s\n[msg] ", data.message);
 
+        fflush(stdout);
         usleep(1000);
     }
     fflush(stdout);
