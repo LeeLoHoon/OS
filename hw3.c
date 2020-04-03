@@ -83,9 +83,8 @@ void *sender(void *param)
     
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
-        fflush(stdin);
+        fflush(stdout);
         if(strcmp(string_buffer,"\n")==0) continue;
-        fflush(stdin);
 
         string_buffer[strlen(string_buffer) - 1] = '\0';
         //printf("%d\n",(int)strlen(string_buffer));
@@ -102,11 +101,9 @@ void *sender(void *param)
             repeat_receiver = 0;
             pthread_exit(0);
         }
-        fflush(stdin);
         //pthread_mutex_loc(&mutex);
         
         ret = msgsnd(*(int*)param,&data,sizeof(t_data)-sizeof(long),0);
-        fflush(stdin);
         
          if (ret== -1)
             {
@@ -119,7 +116,7 @@ void *sender(void *param)
         //printf("Suceess\n");
         //pthread_mutex_unlock(&mutex);
         //fflush(stderr);
-        fflush(stdin);
+
         
     }
     return NULL;
