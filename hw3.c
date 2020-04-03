@@ -79,6 +79,7 @@ void *sender(void *param)
     while (strcmp(string_buffer, "quit") != 0)
     {
     
+        
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
 
@@ -100,7 +101,7 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
-        sleep(1);
+        
         ret = msgsnd(*(int*)param,&data,sizeof(t_data)-sizeof(long),0);
         
          if (ret== -1)
@@ -114,6 +115,7 @@ void *sender(void *param)
         //printf("Suceess\n");
         //pthread_mutex_unlock(&mutex);
         //fflush(stderr);
+        usleep(10000);
         
     }
     return NULL;
