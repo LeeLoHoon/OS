@@ -80,8 +80,11 @@ void *sender(void *param)
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
 
-        if (strcmp(string_buffer, "\n") == 0)
+        if (strcmp(string_buffer, "\n") == 0){
+            fflush(stdout);
             continue;
+        }
+            
 
         string_buffer[strlen(string_buffer) - 1] = '\0';
         data.type = 1;
