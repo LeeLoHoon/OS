@@ -75,14 +75,14 @@ void *sender(void *param)
 {
 
     int ret=0;
+
+    fflush(stdout);
     
     while (strcmp(string_buffer, "quit") != 0)
     {
     
-        
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
-
         if(strcmp(string_buffer,"\n")==0) continue;
 
         string_buffer[strlen(string_buffer) - 1] = '\0';
@@ -103,6 +103,7 @@ void *sender(void *param)
         //pthread_mutex_loc(&mutex);
         
         ret = msgsnd(*(int*)param,&data,sizeof(t_data)-sizeof(long),0);
+        fflush(stdout);
         
          if (ret== -1)
             {
@@ -115,7 +116,6 @@ void *sender(void *param)
         //printf("Suceess\n");
         //pthread_mutex_unlock(&mutex);
         //fflush(stderr);
-        usleep(10000);
         
     }
     return NULL;
@@ -127,26 +127,20 @@ void *receiver(void *param)
 
     
     //printf("%d",atoi(param));
+    fflush(stdout);
 
     while (repeat_receiver == 1)
     {  
 		
         int ret=0;
         
-        fflush(stdout);
+        
 
         ret = msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 1, IPC_NOWAIT);
+ 
+        if (ret != -1) printf("               [incomming] %s\n[msg] ",data.buff);
 
-        if (ret== -1)
-            {
-                //perror("msgrcv() 실패");
-    
-            }
-        else {
-			printf("               [incomming] %s\n[msg] ",data.buff);
-			//fflush(stdout);
-            
-		}
+        fflush(stdout);
 
         usleep(1000);
 
