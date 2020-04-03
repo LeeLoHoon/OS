@@ -10,17 +10,16 @@
 
 #define BUFFER_SIZE 1024
 
-typedef struct {
-    long    type;
-    char    buff[BUFFER_SIZE];
-} t_data;
+typedef struct
+{
+    long type;
+    char message[BUFFER_SIZE];
+} s_data;
 
 int repeat_receiver = 1;
 char string_buffer[BUFFER_SIZE];
-int num=0;
-t_data data;
-
-//pthread_mutex_t mutex =  PTHREAD_MUTEX_INITIALIZER;
+int num = 0;
+s_data data;
 
 void *receiver(void *);
 void *sender(void *);
@@ -38,13 +37,11 @@ int main(int argc, char *argv[])
     }
     if (atoi(argv[1]) < 0 || atoi(argv[2]) < 0)
     {
-        fprintf(stderr, "%d must be <= 0\n", atoi(argv[1]));
+        fprintf(stderr, "x should be natural number\n");
         exit(0);
     }
 
-    
-
-     sqid = msgget((key_t)atoi(argv[1]), IPC_CREAT | 0666);
+    sqid = msgget((key_t)atoi(argv[1]), IPC_CREAT | 0666);
     if (sqid == -1)
     {
         perror("msgget error : ");
@@ -60,98 +57,70 @@ int main(int argc, char *argv[])
 
     pthread_attr_init(&sattr);
     pthread_attr_init(&rattr);
+
     pthread_create(&stid, &sattr, sender, &sqid);
     pthread_create(&rtid, &rattr, receiver, &rqid);
+
     pthread_join(stid, NULL);
     pthread_join(rtid, NULL);
 
     msgctl(sqid, IPC_RMID, 0);
     msgctl(rqid, IPC_RMID, 0);
-    //printf("deallocate\n");
+
     return 0;
 }
 
 void *sender(void *param)
 {
+    int ret = 0;
 
-    int ret=0;
-
-    fflush(stdout);
-    
     while (strcmp(string_buffer, "quit") != 0)
     {
-    
         printf("[msg] ");
         fgets(string_buffer, BUFFER_SIZE, stdin);
-        fflush(stdout);
-        if(strcmp(string_buffer,"\n")==0) continue;
+
+        if (strcmp(string_buffer, "\n") == 0)
+            continue;
 
         string_buffer[strlen(string_buffer) - 1] = '\0';
-        //printf("%d\n",(int)strlen(string_buffer));
-        
-
-        data.type=1;
-        strcpy(data.buff,string_buffer);
-
-       // printf("%s\n",data.buff);
+        data.type = 1;
+        strcpy(data.message, string_buffer);
 
         if (strcmp(string_buffer, "quit") == 0)
         {
-            //printf("aaaaaa\n");
             repeat_receiver = 0;
             pthread_exit(0);
         }
-        //pthread_mutex_loc(&mutex);
-        
-        ret = msgsnd(*(int*)param,&data,sizeof(t_data)-sizeof(long),0);
-        
-         if (ret== -1)
-            {
-                printf("error\n");
-                perror("msgsnd() 실패");
-                exit(1);
-            }
 
+        ret = msgsnd(*(int *)param, &data, sizeof(s_data) - sizeof(long), 0);
 
-        //printf("Suceess\n");
-        //pthread_mutex_unlock(&mutex);
-        //fflush(stderr);
-
-        
+        if (ret == -1)
+        {
+            printf("error\n");
+            perror("msgsnd() 실패");
+            exit(1);
+        }
     }
+    fflush(stdout);
     return NULL;
 }
 
 void *receiver(void *param)
 {
-
-
-    
-    //printf("%d",atoi(param));
     fflush(stdout);
 
     while (repeat_receiver == 1)
-    {  
-		
-        int ret=0;
-        
-        
+    {
 
-        ret = msgrcv(*(int*)param, &data, (sizeof(t_data)-sizeof(long)), 1, IPC_NOWAIT);
- 
-        if (ret != -1) printf("               [incomming] %s\n[msg] ",data.buff);
+        int ret = 0;
 
-        fflush(stdout);
+        ret = msgrcv(*(int *)param, &data, (sizeof(s_data) - sizeof(long)), 1, IPC_NOWAIT);
+
+        if (ret != -1)
+            printf("               [incomming] %s\n[msg] ", data.message);
 
         usleep(1000);
-
-        
-
-        //printf("%s\n",data.buff);
-        
-        //usleep(1000);
-
     }
-    //printf("receiver quit\n");
+    fflush(stdout);
     pthread_exit(0);
 }
