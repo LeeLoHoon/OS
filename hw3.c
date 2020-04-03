@@ -100,7 +100,9 @@ void *sender(void *param)
             pthread_exit(0);
         }
         //pthread_mutex_loc(&mutex);
+        usleep(1000);
         ret = msgsnd(*(int*)param,&data,sizeof(t_data)-sizeof(long),0);
+        
          if (ret== -1)
             {
                 printf("error\n");
@@ -140,7 +142,7 @@ void *receiver(void *param)
             }
         else {
 			printf("               [incomming] %s\n[msg] ",data.buff);
-			fflush(stdout);
+			//fflush(stdout);
             
 		}
 
