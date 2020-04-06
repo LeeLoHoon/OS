@@ -22,6 +22,8 @@ char string_buffer[BUFFER_SIZE];
 int num = 0;
 s_data data;
 
+struct winsize w;
+
 void *receiver(void *);
 void *sender(void *);
 
@@ -42,14 +44,7 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    struct winsize w;
     ioctl(0, TIOCGWINSZ, &w);
-    
-    int terminal_columns = w.ws_col;
-
-    int terminal_rows = w.ws_row;
-
-    printf("terminal size = %dx%d\n", terminal_columns, terminal_rows);
 
     sqid = msgget((key_t)atoi(argv[1]), IPC_CREAT | 0666);
     if (sqid == -1)
@@ -126,9 +121,15 @@ void *receiver(void *param)
         int ret = 0;
 
         ret = msgrcv(*(int *)param, &data, (sizeof(s_data) - sizeof(long)), 1, IPC_NOWAIT);
+        int terminal_columns = w.ws_col;
 
         if (ret != -1)
-            printf("               [incomming] %s\n[msg] ", data.message);
+        {
+            for (int i = 0; i < (terminal_columns / 2); i++)
+                printf(" ");
+
+            printf("[incomming] %s\n[msg] ", data.message);
+        }
 
         fflush(stdout);
         usleep(1000);
