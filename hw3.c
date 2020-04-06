@@ -6,6 +6,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <sys/stat.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
 
 #define BUFFER_SIZE 1024
@@ -40,6 +41,15 @@ int main(int argc, char *argv[])
         fprintf(stderr, "x should be natural number\n");
         exit(0);
     }
+
+    struct winsize w;
+    ioctl(0, TIOCGWINSZ, &w);
+    
+    int terminal_columns = w.ws_col;
+
+    int terminal_rows = w.ws_row;
+
+    printf("terminal size = %dx%d\n", terminal_columns, terminal_rows);
 
     sqid = msgget((key_t)atoi(argv[1]), IPC_CREAT | 0666);
     if (sqid == -1)
