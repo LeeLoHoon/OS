@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 		pthread_create(&tid[k],&attr[k],MoveBall,&param[k]);
 
 	for(int s=0; s<no_thread; s++)
-		pthread_join(&tid[s],NULL);
+		pthread_join(tid[s],NULL);
 
 
 
