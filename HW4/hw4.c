@@ -188,7 +188,7 @@ void* MoveBall(void *vparam)
 
 		if(kbhit()){
 			if(getch()==27){
-				//repeat=FALSE;
+				repeat=FALSE;
 				break;
 			}
 		}
