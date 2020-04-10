@@ -186,16 +186,21 @@ void* MoveBall(void *vparam)
 
 
 
-		// if(kbhit()){
-		// 	if(getch()==27){
-		// 		repeat=FALSE;
-		// 		break;
-		// 	}
-		// }
+		if(kbhit()){
+			if(getch()==27){
+				//repeat=FALSE;
+				break;
+			}
+		}
 
 		// while(getch() == 27){
 		// 	repeat=FALSE;
 		// 	MySleep(1000);
+		// }
+
+		// while(getch() != 27){
+		// 	MySleep(1000);
+			
 		// }
 			
 
@@ -204,10 +209,9 @@ void* MoveBall(void *vparam)
 			
 			
 
+		
 
-		while(getch() != 27){
-			MySleep(1000);
-			// save current coordinate
+		// save current coordinate
 		int oldx = param->x;
 		int oldy = param->y;
 		
@@ -240,10 +244,8 @@ void* MoveBall(void *vparam)
 
 		// draw new ball
 		PrintXY(param->x, param->y, "*");
-			
-		}
 
-		repeat=FALSE;
+
 
 		// delay
 		MySleep(50);
