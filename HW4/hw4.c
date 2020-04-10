@@ -197,11 +197,9 @@ void* MoveBall(void *vparam)
 		// 	}
 		// }
 
-		while(getch() != 27){
-
-			printf("!!!!!!!!!\n");
+		while(getch() == 27){
+			repeat=FALSE;
 			MySleep(1000);
-
 		}
 			
 
