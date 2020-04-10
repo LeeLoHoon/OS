@@ -63,19 +63,6 @@ int main(int argc, char *argv[])
 //		ex) ThreadParam param[no_thread];
 //  2. Initialize each of param[t] by calling InitParam()
 
-	pthread_t tid[no_thread];
-	pthread_attr_t attr[no_thread];
-
-	for(int j=0;j<no_thread;j++)
-		pthread_attr_init(&attr[j]);
-
-	for(int k=0;k<no_thread;k++)
-		pthread_create(&tid[k],&attr[k],MoveBall,&param[k]);
-
-	for(int s=0; s<no_thread; s++)
-		pthread_join(tid[s],NULL);
-
-
 
 	// animate the bouncing ball 
 	while(repeat){
@@ -126,6 +113,18 @@ int main(int argc, char *argv[])
 		// delay
 		MySleep(50);
 	}
+
+	pthread_t tid[no_thread];
+	pthread_attr_t attr[no_thread];
+
+	for(int j=0;j<no_thread;j++)
+		pthread_attr_init(&attr[j]);
+
+	for(int k=0;k<no_thread;k++)
+		pthread_create(&tid[k],&attr[k],MoveBall,&param[k]);
+
+	for(int s=0; s<no_thread; s++)
+		pthread_join(tid[s],NULL);
 
 
 // TO DO: extend the above animation code to animate multiple balls using threads 
@@ -184,7 +183,7 @@ void* MoveBall(void *vparam)
 		// DO NOT copy the next 4 lines to MoveBall()
 
 
-		while(getch() == 27)
+		while(getch() != 27)
 			MySleep(1000);
 
 		// save current coordinate
