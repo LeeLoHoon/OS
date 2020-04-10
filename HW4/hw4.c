@@ -187,7 +187,11 @@ void* MoveBall(void *vparam)
 		while(getch() == 27){
 			MySleep(1000);
 			repeat=FALSE;
+			break;
 		}
+			
+
+		
 
 		// save current coordinate
 		int oldx = param->x;
