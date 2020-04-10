@@ -70,7 +70,6 @@ int main(int argc, char *argv[])
 		// DO NOT copy the next 4 lines to MoveBall()
 		if(kbhit()){			// check if the a key was pressed
 			if(getch() == 27){
-				repeat=FALSE;
 				break;
 			}	// 27: ASCII code of ESC
 				
@@ -113,6 +112,8 @@ int main(int argc, char *argv[])
 		// delay
 		MySleep(50);
 	}
+
+	repeat=FALSE;
 
 	pthread_t tid[no_thread];
 	pthread_attr_t attr[no_thread];
