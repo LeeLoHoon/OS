@@ -124,6 +124,14 @@ int main(int argc, char *argv[])
 	for(int k=0;k<no_thread;k++)
 		pthread_create(&tid[k],&attr[k],MoveBall,&param[k]);
 
+	if(kbhit()){	
+		while(getch() != 27)
+			MySleep(1000);	
+		if(getch() == 27){
+			repeat=FALSE;
+		}
+	}	
+
 	for(int s=0; s<no_thread; s++)
 		pthread_join(tid[s],NULL);
 
@@ -186,20 +194,17 @@ void* MoveBall(void *vparam)
 
 
 
-		if(kbhit()){
-			if(getch()==27){
-				repeat=FALSE;
-				break;
-			}
-		}
+		// if(kbhit()){
+		// 	if(getch()==27){
+		// 		repeat=FALSE;
+		// 		break;
+		// 	}
+		// }
 
 		// while(getch() == 27){
 		// 	repeat=FALSE;
 		// 	MySleep(1000);
 		// }
-
-		// while(getch() != 27){
-		// 	MySleep(1000);
 			
 		// }
 			
