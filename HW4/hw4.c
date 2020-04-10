@@ -65,55 +65,55 @@ int main(int argc, char *argv[])
 
 
 	// animate the bouncing ball 
-	while(repeat){
-		// if the user presses ESC, terminate
-		// DO NOT copy the next 4 lines to MoveBall()
-		if(kbhit()){			// check if the a key was pressed
-			if(getch() == 27){
-				break;
-			}	// 27: ASCII code of ESC
+	// while(repeat){
+	// 	// if the user presses ESC, terminate
+	// 	// DO NOT copy the next 4 lines to MoveBall()
+	// 	if(kbhit()){			// check if the a key was pressed
+	// 		if(getch() == 27){
+	// 			break;
+	// 		}	// 27: ASCII code of ESC
 				
-		}
+	// 	}
 
-		// save current coordinate
-		int oldx = x;
-		int oldy = y;
+	// 	// save current coordinate
+	// 	int oldx = x;
+	// 	int oldy = y;
 		
-		// update horizontal coordinate
-		x += dx;
+	// 	// update horizontal coordinate
+	// 	x += dx;
 
-		// horizontal bouncing
-		if(x <= 0){
-			x = 1 + (1 - x);
-			dx = -dx;
-		} else if(x > width){
-			x = width - (x - width) - 1;
-			dx = -dx;
-		}
+	// 	// horizontal bouncing
+	// 	if(x <= 0){
+	// 		x = 1 + (1 - x);
+	// 		dx = -dx;
+	// 	} else if(x > width){
+	// 		x = width - (x - width) - 1;
+	// 		dx = -dx;
+	// 	}
 
-		// update vertical coordinate
-		y += dy;
+	// 	// update vertical coordinate
+	// 	y += dy;
 
-		// vertical bouncing
-		if(y <= 0){
-			y = 1 + (1 - y);
-			dy = -dy;
-		} else if(y > height){
-			y = height - (y - height) - 1;
-			dy = -dy;
-		}
+	// 	// vertical bouncing
+	// 	if(y <= 0){
+	// 		y = 1 + (1 - y);
+	// 		dy = -dy;
+	// 	} else if(y > height){
+	// 		y = height - (y - height) - 1;
+	// 		dy = -dy;
+	// 	}
 
-		// delete previous ball
-		PrintXY(oldx, oldy, " ");
+	// 	// delete previous ball
+	// 	PrintXY(oldx, oldy, " ");
 
-		// draw new ball
-		PrintXY(x, y, "*");
+	// 	// draw new ball
+	// 	PrintXY(x, y, "*");
 
-		// delay
-		MySleep(50);
-	}
+	// 	// delay
+	// 	MySleep(50);
+	// }
 
-	repeat=FALSE;
+	// repeat=FALSE;
 
 	pthread_t tid[no_thread];
 	pthread_attr_t attr[no_thread];
