@@ -184,8 +184,8 @@ void* MoveBall(void *vparam)
 		// DO NOT copy the next 4 lines to MoveBall()
 
 
-		while(getch() != 27)
-			MySleep(1000);
+		// while(getch() != 27)
+		// 	MySleep(1000);
 
 		// save current coordinate
 		int oldx = param->x;
