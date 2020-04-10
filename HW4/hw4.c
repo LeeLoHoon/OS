@@ -190,12 +190,21 @@ void* MoveBall(void *vparam)
 		// 	break;
 		// }
 
-		if(kbhit()){
-			if(getch()==27){
-				repeat=FALSE;
-				break;
-			}
+		// if(kbhit()){
+		// 	if(getch()==27){
+		// 		repeat=FALSE;
+		// 		break;
+		// 	}
+		// }
+
+		while(getch() != 27){
+
+			printf("!!!!!!!!!\n");
+			MySleep(1000);
+
 		}
+			
+
 
 		
 			
