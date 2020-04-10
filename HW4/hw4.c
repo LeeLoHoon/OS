@@ -57,58 +57,6 @@ int main(int argc, char *argv[])
 //		ex) ThreadParam param[no_thread];
 //  2. Initialize each of param[t] by calling InitParam()
 
-
-	// animate the bouncing ball 
-	// while(repeat){
-	// 	// if the user presses ESC, terminate
-	// 	// DO NOT copy the next 4 lines to MoveBall()
-	// 	if(kbhit()){			// check if the a key was pressed
-	// 		if(getch() == 27){
-	// 			break;
-	// 		}	// 27: ASCII code of ESC
-				
-	// 	}
-
-	// 	// save current coordinate
-	// 	int oldx = x;
-	// 	int oldy = y;
-		
-	// 	// update horizontal coordinate
-	// 	x += dx;
-
-	// 	// horizontal bouncing
-	// 	if(x <= 0){
-	// 		x = 1 + (1 - x);
-	// 		dx = -dx;
-	// 	} else if(x > width){
-	// 		x = width - (x - width) - 1;
-	// 		dx = -dx;
-	// 	}
-
-	// 	// update vertical coordinate
-	// 	y += dy;
-
-	// 	// vertical bouncing
-	// 	if(y <= 0){
-	// 		y = 1 + (1 - y);
-	// 		dy = -dy;
-	// 	} else if(y > height){
-	// 		y = height - (y - height) - 1;
-	// 		dy = -dy;
-	// 	}
-
-	// 	// delete previous ball
-	// 	PrintXY(oldx, oldy, " ");
-
-	// 	// draw new ball
-	// 	PrintXY(x, y, "*");
-
-	// 	// delay
-	// 	MySleep(50);
-	// }
-
-	// repeat=FALSE;
-
 	pthread_t tid[no_thread];
 	pthread_attr_t attr[no_thread];
 
@@ -156,19 +104,6 @@ void InitParam(ThreadParam *param, int width, int height)
 	param->y = rand() % height + 1;
 	param->dx = rand() % 7 - 3;
 	param->dy = rand() % 5 - 2;
-	// int x = rand() % width + 1;
-	// int y = rand() % height + 1;
-	// int dx = rand() % 7 - 3;		// dx in [-3, +3]
-	// int dy = rand() % 5 - 2;		// dy in [-2, +2]
-	// TO DO: implement this function to initialize param
-
-	// fill param->width, param->height using the parameters
-
-	// set x to a random number in [1, width]
-	// set y to a random number in [1, height]
-
-	// set dx to a random number in [-3, +3]
-	// set dy to a random number in [-2, +2]
 }
 
 void* MoveBall(void *vparam)
