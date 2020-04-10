@@ -182,9 +182,9 @@ void* MoveBall(void *vparam)
 	while(repeat){
 		// if the user presses ESC, terminate
 		// DO NOT copy the next 4 lines to MoveBall()
-		
 
-		while(getch() != 27)
+
+		while(getch() == 27)
 			MySleep(1000);
 
 		// save current coordinate
