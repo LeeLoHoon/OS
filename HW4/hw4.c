@@ -184,11 +184,7 @@ void* MoveBall(void *vparam)
 		// DO NOT copy the next 4 lines to MoveBall()
 
 
-		// while(getch() == 27){
-		// 	MySleep(1000);
-		// 	repeat=FALSE;
-		// 	break;
-		// }
+
 
 		// if(kbhit()){
 		// 	if(getch()==27){
@@ -197,10 +193,10 @@ void* MoveBall(void *vparam)
 		// 	}
 		// }
 
-		while(getch() == 27){
-			repeat=FALSE;
-			MySleep(1000);
-		}
+		// while(getch() == 27){
+		// 	repeat=FALSE;
+		// 	MySleep(1000);
+		// }
 			
 
 
@@ -243,6 +239,10 @@ void* MoveBall(void *vparam)
 
 		// draw new ball
 		PrintXY(param->x, param->y, "*");
+
+		while(getch() != 27){
+			MySleep(1000);
+		}
 
 		// delay
 		MySleep(50);
