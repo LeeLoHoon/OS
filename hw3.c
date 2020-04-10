@@ -125,7 +125,7 @@ void *receiver(void *param)
 
         if (ret != -1)
         {
-            for (int i = 5; i < (terminal_columns / 2); i++)
+            for (int i = 20; i < (terminal_columns / 2); i++)
                 printf(" ");
 
             printf("[incomming] %s\n[msg] ", data.message);
