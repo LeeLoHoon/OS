@@ -184,11 +184,11 @@ void* MoveBall(void *vparam)
 		// DO NOT copy the next 4 lines to MoveBall()
 
 
-		while(getch() == 27){
-			MySleep(1000);
-			repeat=FALSE;
-			break;
-		}
+		// while(getch() == 27){
+		// 	MySleep(1000);
+		// 	repeat=FALSE;
+		// 	break;
+		// }
 			
 
 		
