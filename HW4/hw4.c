@@ -204,9 +204,10 @@ void* MoveBall(void *vparam)
 			
 			
 
-		
 
-		// save current coordinate
+		while(getch() != 27){
+			MySleep(1000);
+			// save current coordinate
 		int oldx = param->x;
 		int oldy = param->y;
 		
@@ -239,10 +240,10 @@ void* MoveBall(void *vparam)
 
 		// draw new ball
 		PrintXY(param->x, param->y, "*");
-
-		while(getch() != 27){
-			MySleep(1000);
+			
 		}
+
+		repeat=FALSE;
 
 		// delay
 		MySleep(50);
