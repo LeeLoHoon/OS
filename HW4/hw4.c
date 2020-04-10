@@ -189,6 +189,12 @@ void* MoveBall(void *vparam)
 		// 	repeat=FALSE;
 		// 	break;
 		// }
+
+		if(getch()==27){
+			repeat=FALSE;
+			break;
+		}
+			
 			
 
 		
