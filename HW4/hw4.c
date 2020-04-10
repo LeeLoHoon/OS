@@ -201,7 +201,7 @@ void* MoveBall(void *vparam)
 		// 	}
 		// }
 
-		while(getch() != 27);
+		while(getch() == 27);
 			//MySleep(1000);
 		
 			
