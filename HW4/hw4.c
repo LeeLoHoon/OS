@@ -53,10 +53,28 @@ int main(int argc, char *argv[])
 	int dx = rand() % 7 - 3;		// dx in [-3, +3]
 	int dy = rand() % 5 - 2;		// dy in [-2, +2]
 
+	ThreadParam param[no_thread];
+	for(int i=0; i<no_thread; i++)
+		InitParam( &param[i], width, height);
+
+
 // TO DO: modify the above code to represent multiple balls
 //	1. Declare an array of ThreadParam whose length is no_thread.
 //		ex) ThreadParam param[no_thread];
 //  2. Initialize each of param[t] by calling InitParam()
+
+	pthread_t tid[no_thread];
+	pthread_attr_t attr[no_thread];
+
+	for(int j=0;j<no_thread;j++)
+		pthread_attr_init(&attr[j]);
+
+	for(int k=0;k<no_thread;k++)
+		pthread_create(&tid[k],&attr[k],MoveBall,&param[k]);
+
+	for(int s=0; s<no_thread; s++)
+		pthread_join(tid[s],NULL);
+
 
 
 	// animate the bouncing ball 
@@ -64,8 +82,11 @@ int main(int argc, char *argv[])
 		// if the user presses ESC, terminate
 		// DO NOT copy the next 4 lines to MoveBall()
 		if(kbhit()){			// check if the a key was pressed
-			if(getch() == 27)	// 27: ASCII code of ESC
+			if(getch() == 27){
+				repeat=FALSE;
 				break;
+			}	// 27: ASCII code of ESC
+				
 		}
 
 		// save current coordinate
@@ -106,6 +127,7 @@ int main(int argc, char *argv[])
 		MySleep(50);
 	}
 
+
 // TO DO: extend the above animation code to animate multiple balls using threads 
 
 //	1. Move the above while-loop to the 'void* MoveBall(void *vparam);' below.
@@ -131,6 +153,16 @@ int main(int argc, char *argv[])
 
 void InitParam(ThreadParam *param, int width, int height)
 {
+	param->width = width;
+	param->height = height;
+	param->x = rand() % width + 1;
+	param->y = rand() % height + 1;
+	param->dx = rand() % 7 - 3;
+	param->dy = rand() % 5 - 2;
+	// int x = rand() % width + 1;
+	// int y = rand() % height + 1;
+	// int dx = rand() % 7 - 3;		// dx in [-3, +3]
+	// int dy = rand() % 5 - 2;		// dy in [-2, +2]
 	// TO DO: implement this function to initialize param
 
 	// fill param->width, param->height using the parameters
@@ -145,6 +177,55 @@ void InitParam(ThreadParam *param, int width, int height)
 void* MoveBall(void *vparam)
 {
 	ThreadParam *param = (ThreadParam*) vparam;
+
+
+	while(repeat){
+		// if the user presses ESC, terminate
+		// DO NOT copy the next 4 lines to MoveBall()
+		
+
+		while(getch() != 27)
+			MySleep(1000);
+
+		// save current coordinate
+		int oldx = param->x;
+		int oldy = param->y;
+		
+		// update horizontal coordinate
+		param->x += param->dx;
+
+		// horizontal bouncing
+		if(param->x <= 0){
+			param->x = 1 + (1 - param->x);
+			param->dx = -param->dx;
+		} else if(param->x > param->width){
+			param->x = param->width - (param->x - param->width) - 1;
+			param->dx = -param->dx;
+		}
+
+		// update vertical coordinate
+		param->y += param->dy;
+
+		// vertical bouncing
+		if(param->y <= 0){
+			param->y = 1 + (1 - param->y);
+			param->dy = -param->dy;
+		} else if(param->y > param->height){
+			param->y = param->height - (param->y - param->height) - 1;
+			param->dy = -param->dy;
+		}
+
+		// delete previous ball
+		PrintXY(oldx, oldy, " ");
+
+		// draw new ball
+		PrintXY(param->x, param->y, "*");
+
+		// delay
+		MySleep(50);
+	}
+
+	pthread_exit(0);
 
 	// TO DO: implement this function 
 	//	move the animation code (the while-loop in the main()) here and modify it to work correctly
