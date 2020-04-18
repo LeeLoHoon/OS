@@ -1,4 +1,4 @@
-iiiiiiia	:	at.o
+iiiiiiiiiiia	:	at.o
 	gcc	-o	a	at.o
 at.o	:	hw3.c
 	gcc	-c	-o	at.o	hw3.c	
