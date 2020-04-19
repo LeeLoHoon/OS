@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 #define BUFFER_SIZE 1024
-
+//
 typedef struct
 {
     long type;
