@@ -18,7 +18,7 @@ void DisplayVector(Vector *vec, char *mesg);
 void FillVectorIncreasing(Vector *vec);
 void FillVectorDecreasing(Vector *vec);
 
-void VectorAdd(Vector *vec1, Vector *vec2, Vector *res);
+void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res,int no_thread);
 
 
 int main(int argc, char *argv[])
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	struct timeval start_time, end_time;
 	gettimeofday(&start_time, NULL);
 
-	VectorAdd(&vecA, &vecB, &sum);
+	VectorAdd_MT(&vecA, &vecB, &sum,no_thread);
 
 	gettimeofday(&end_time, NULL);
 	end_time.tv_sec -= start_time.tv_sec;
@@ -130,13 +130,44 @@ typedef struct {
 	int no_thread;
 } VectorAdd_param;
 
+void* VectorAdd_Thread(void *vparam);
+
 void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 {
+	int t=0;
+	pthread_t tid[no_thread];
+	VectorAdd_param param[no_thread];
+
+	for(t=0; t<no_thread; t++){
+		param[t].vec1 = vec1;
+		param[t].vec2 = vec2;
+		param[t].res = res;
+		param[t].thread_idx = t;
+		param[t].no_thread = no_thread;
+	}
+
+	for(t=0; t<no_thread; t++)
+		pthread_create(&tid[t],NULL,VectorAdd_Thread,&param[t]);
+
+	for(t=0; t<no_thread; t++)
+		pthread_join(tid[t],NULL);	
 
 }
+void* VectorAdd_Thread(void *vparam){
 
-void VectorAdd(Vector *vec1, Vector *vec2, Vector *res)
-{
-	for(int i = 0; i < vec1->dim; i++)
+	VectorAdd_param *param = (VectorAdd_param*)vparam;
+	Vector *vec1 = param->vec1;
+	Vector *vec2 = param->vec2;
+	Vector *res = param->res;
+
+	for(int i=param->thread_idx; i<vec1->dim; i+= param->no_thread)
 		res->data[i] = vec1->data[i] + vec2->data[i];
 }
+
+
+
+// void VectorAdd(Vector *vec1, Vector *vec2, Vector *res)
+// {
+// 	for(int i = 0; i < vec1->dim; i++)
+// 		res->data[i] = vec1->data[i] + vec2->data[i];
+// }
