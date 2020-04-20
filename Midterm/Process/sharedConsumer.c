@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 
 #define BUFFER_SIZE 6
@@ -17,6 +18,8 @@
 typedef struct{
     int in;
     int out;
+    bool turn;
+    bool flag[2];
     char item[6][20];
 }entire;
 
@@ -34,22 +37,42 @@ int main(){
     ftruncate(shm_fd, sizeof(entire));
 
     ptr = mmap(0,sizeof(entire), PROT_WRITE, MAP_SHARED,  shm_fd,0);
-    while(1){
-        while(ptr->in==ptr->out);
+
+    do{
+
+
+        
+        ptr->flag[1]=true;
+        ptr->turn=0;
+        while(ptr->flag[0] && ptr->turn==0 && ptr->in==ptr->out);
+
         fgets(ch,sizeof(ch),stdin);
         ch[strlen(ch)-1]='\0';
+
+
         if(strcmp(ch,"go")==0){
             strcpy(chat,ptr->item[ptr->out]);
             ptr->out = ((ptr->out)+1)%BUFFER_SIZE;
+            printf("in: %d    out: %d     component: %s\n",ptr->in,ptr->out,chat);
+        }
+
+        else if(strcmp(ch,"exit")==0){
+            munmap(ptr,sizeof(entire));
+            break;
         }
    
-        printf("%d\n",ptr->in);
-        printf("%d\n",ptr->out);
-        printf("%s\n",chat);
-        fflush(stdout);
-    }
+        
 
-    shm_unlink(name);
+        ptr->flag[1]=false;
+
+        fflush(stdout);
+
+
+
+    }while(1);
+
+
+    
 
     return 0;
 }

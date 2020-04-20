@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #define BUFFER_SIZE 6
 
@@ -17,10 +18,14 @@
 typedef struct{
     int in;
     int out;
+    bool turn;
+    bool flag[2];
     char item[6][20];
 }entire;
 
 int main(){
+    
+
 
     const int SIZE = 4096;
     const char *name = "OSS";
@@ -39,22 +44,39 @@ int main(){
     ptr = mmap(0,sizeof(entire), PROT_WRITE, MAP_SHARED,  shm_fd,0);
     ptr->in = 0;
     ptr->out = 0;
+    
 
     //printf("%d\n",ptr->in);
-    while(1){
-        
-        while((((ptr->in)+1)%BUFFER_SIZE)==ptr->out);
+
+    do{
+
+    
+
+        ptr->flag[0]=true;
+        ptr->turn=1;
+        while(ptr->flag[1] && ptr-> turn==1 && (((ptr->in)+1)%BUFFER_SIZE)==ptr->out );
+
         fgets(chat,sizeof(chat),stdin);
         chat[strlen(chat)-1]='\0';
+        
         strcpy(ptr->item[ptr->in],chat);
+        if(strcmp(chat,"exit")==0){
+            munmap(ptr,sizeof(entire));
+            break;
+        }
         ptr->in = ((ptr->in)+1)%BUFFER_SIZE;
         //printf("%n",ptr->item[(ptr->in)-1]);
-        printf("%d\n",ptr->in);
-        printf("%d\n",ptr->out);
+        printf("in : %d   out : %d\n",ptr->in,ptr->out);
+        ptr->flag[0]=false;
+
         fflush(stdout);
 
-    }
 
+    }while(1);
+
+    
+    shm_unlink(name);
+    
 
 
    
