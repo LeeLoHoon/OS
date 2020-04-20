@@ -17,9 +17,10 @@ void DeleteVector(Vector *vec);
 void DisplayVector(Vector *vec, char *mesg);
 void FillVectorIncreasing(Vector *vec);
 void FillVectorDecreasing(Vector *vec);
-
+void clean_up(void *arg);
 void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res,int no_thread);
 
+__thread int tls;
 
 int main(int argc, char *argv[])
 {
@@ -132,10 +133,21 @@ typedef struct {
 
 void* VectorAdd_Thread(void *vparam);
 
+
+void clean_up(void *arg)
+{
+    printf("Thread cancel Clean_up function\n");
+}
+
 void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 {
 	int t=0;
+	int scope;
+	
 	pthread_t tid[no_thread];
+	pthread_attr_t attr[no_thread];
+
+	
 	VectorAdd_param param[no_thread];
 
 	for(t=0; t<no_thread; t++){
@@ -146,8 +158,24 @@ void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 		param[t].no_thread = no_thread;
 	}
 
-	for(t=0; t<no_thread; t++)
-		pthread_create(&tid[t],NULL,VectorAdd_Thread,&param[t]);
+	for(t=0; t<no_thread; t++){
+		pthread_attr_init(&attr[t]);
+	// 	pthread_attr_getscope(&attr[t],&scope);
+	// 	if (scope == PTHREAD_SCOPE_SYSTEM)
+    // {
+    //     printf("user mode thread\n");
+    // }
+    // else if (scope ==  PTHREAD_SCOPE_PROCESS)
+    // {
+    //     printf("Kernel mode thread\n");
+    // }
+	}
+
+	for(t=0; t<no_thread; t++){
+		pthread_create(&tid[t],&attr[t],VectorAdd_Thread,&param[t]);
+		//pthread_cancel(tid[t]);
+	}
+		
 
 	for(t=0; t<no_thread; t++)
 		pthread_join(tid[t],NULL);	
@@ -160,9 +188,40 @@ void* VectorAdd_Thread(void *vparam){
 	Vector *vec2 = param->vec2;
 	Vector *res = param->res;
 
-	for(int i=param->thread_idx; i<vec1->dim; i+= param->no_thread)
+	//종료 요청 무시
+	
+	//pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
+
+
+	//종료 요청 적용
+	
+	// pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+	// pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+	// pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+
+
+	
+	
+
+	for(int i=param->thread_idx; i<vec1->dim; i+= param->no_thread){
 		res->data[i] = vec1->data[i] + vec2->data[i];
+		//thread 마다 tls가 생김
+		//tls=i;
+	}
+	//Deferred에서 끝내도 되는 분기점
+	//pthread_testcancel();
+	
+	//printf("%d\n",tls);
+
+	
+
+	
+	
+	
+		
 }
+
+
 
 
 
