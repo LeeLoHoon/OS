@@ -62,14 +62,14 @@ int main(){
         fgets(chat,sizeof(chat),stdin);
         chat[strlen(chat)-1]='\0';
         
+        ptr->flag[0]=true;
+        ptr->turn=1;
+        while(ptr->flag[1] && ptr-> turn==1 );
         strcpy(ptr->item[ptr->in],chat);
         if(strcmp(chat,"exit")==0){
             munmap(ptr,sizeof(entire));
             break;
         }
-        ptr->flag[0]=true;
-        ptr->turn=1;
-        while(ptr->flag[1] && ptr-> turn==1 );
         ptr->in = ((ptr->in)+1)%BUFFER_SIZE;
         //printf("%n",ptr->item[(ptr->in)-1]);
         printf("in : %d   out : %d\n",ptr->in,ptr->out);
