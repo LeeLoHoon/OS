@@ -34,6 +34,8 @@ int main(int argc, char *argv[0])
 		return 0;
 	}
 
+	//새로운 프로세스 형성 
+	//child process는 child_pid = 0 이고 parent process는 child_pid > 0
 	pid_t child_pid = fork();
 
 	if (child_pid < 0)
