@@ -31,7 +31,8 @@ int main(){
     const char *name = "OSS";
     const char *message_0 = "Hello";
     const char *message_1 = "World!";
-    char chat[20];
+    char chat[20],check[20];
+    bool out=false;
 
     int shm_fd;
 
@@ -52,9 +53,11 @@ int main(){
 
     
 
-        ptr->flag[0]=true;
-        ptr->turn=1;
-        while(ptr->flag[1] && ptr-> turn==1 && (((ptr->in)+1)%BUFFER_SIZE)==ptr->out );
+        // ptr->flag[0]=true;
+        // ptr->turn=1;
+        while((((ptr->in)+1)%BUFFER_SIZE)==ptr->out);
+        
+        // while(ptr->flag[1] && ptr-> turn==1 );
 
         fgets(chat,sizeof(chat),stdin);
         chat[strlen(chat)-1]='\0';
@@ -64,6 +67,9 @@ int main(){
             munmap(ptr,sizeof(entire));
             break;
         }
+        ptr->flag[0]=true;
+        ptr->turn=1;
+        while(ptr->flag[1] && ptr-> turn==1 );
         ptr->in = ((ptr->in)+1)%BUFFER_SIZE;
         //printf("%n",ptr->item[(ptr->in)-1]);
         printf("in : %d   out : %d\n",ptr->in,ptr->out);

@@ -42,18 +42,26 @@ int main(){
 
 
         
-        ptr->flag[1]=true;
-        ptr->turn=0;
-        while(ptr->flag[0] && ptr->turn==0 && ptr->in==ptr->out);
+        // ptr->flag[1]=true;
+        // ptr->turn=0;
+        while(ptr->in==ptr->out);
+
+        // while(ptr->flag[0] && ptr->turn==0 );
+
+        //critical part
 
         fgets(ch,sizeof(ch),stdin);
         ch[strlen(ch)-1]='\0';
 
 
         if(strcmp(ch,"go")==0){
+            ptr->flag[1]=true;
+            ptr->turn=0;
+            while(ptr->flag[0] && ptr->turn==0 );
             strcpy(chat,ptr->item[ptr->out]);
             ptr->out = ((ptr->out)+1)%BUFFER_SIZE;
             printf("in: %d    out: %d     component: %s\n",ptr->in,ptr->out,chat);
+            ptr->flag[1]=false;
         }
 
         else if(strcmp(ch,"exit")==0){
@@ -63,7 +71,9 @@ int main(){
    
         
 
-        ptr->flag[1]=false;
+        // ptr->flag[1]=false;
+
+        //remainter part 
 
         fflush(stdout);
 
