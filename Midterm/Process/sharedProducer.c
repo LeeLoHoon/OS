@@ -68,7 +68,7 @@ int main(){
         //printf("%n",ptr->item[(ptr->in)-1]);
         printf("in : %d   out : %d\n",ptr->in,ptr->out);
         ptr->flag[0]=false;
-
+    //
         fflush(stdout);
 
 
