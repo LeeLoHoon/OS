@@ -9,7 +9,6 @@
 #include <sys/stat.h>
 
 #define KEY 8361
-#define SIZE 1024
 
 // struct for message buffer
 typedef struct
@@ -29,7 +28,7 @@ int main(int argc, char *argv[0])
 
 	// hint: allocate shared memory block for the shared buffer
 
-	if ((shm_id = shmget((key_t)KEY, SIZE, IPC_CREAT | 0666)) == -1)
+	if ((shm_id = shmget((key_t)KEY, sizeof(Buffer), IPC_CREAT | 0666)) == -1)
 	{
 		printf("메모리 생성 실패\n");
 		return 0;
@@ -54,7 +53,7 @@ int main(int argc, char *argv[0])
 
 	//Deallocating
 	sleep(1);
-	shmctl(shm_id, IPC_RMID, NULL);
+	
 	
 	return 0;
 }
@@ -90,7 +89,8 @@ void parent(int shm_id)
 	// hint: put some code here
 	// printf("not detach\n");
 	shmdt(buffer);
-	// printf("detach\n");
+	shmctl(shm_id, IPC_RMID, NULL);
+	
 	printf("[parent] Terminating.\n");
 	fflush(stdout);
 }
