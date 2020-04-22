@@ -185,7 +185,7 @@ void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 	for (t = 0; t < no_thread; t++)
 	{
 		pthread_create(&tid[t], &attr[t], VectorAdd_Thread, &param[t]);
-		pthread_cancel(tid[t]);
+		//pthread_cancel(tid[t]);
 		
 	}
 	//print("hi\n");
@@ -211,7 +211,7 @@ void *VectorAdd_Thread(void *vparam)
 	//pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 	//pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
 	//pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
-	sleep(3);
+	//sleep(3);
 
 	
 
@@ -220,12 +220,12 @@ void *VectorAdd_Thread(void *vparam)
 		res->data[i] = vec1->data[i] + vec2->data[i];
 
 		//thread 마다 tls가 생김
-		tls=i;
+		//tls=i;
 	}
 	//Deferred에서 끝내도 되는 분기점
 	
 
-	printf("%d\n",tls);
+	//printf("%d\n",tls);
 }
 
 // void VectorAdd(Vector *vec1, Vector *vec2, Vector *res)
