@@ -154,6 +154,7 @@ void* MoveBall(void *vparam)
 
 
 		// delay
+
 		MySleep(50);
 	}
 
