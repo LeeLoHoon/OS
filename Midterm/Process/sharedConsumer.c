@@ -34,12 +34,11 @@ int main(){
 
     entire *ptr;
     
-    shm_fd = shm_open(name, O_RDWR, 0666);
+    shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
     ftruncate(shm_fd, sizeof(entire));
 
     ptr = mmap(0,sizeof(entire), PROT_WRITE, MAP_SHARED,  shm_fd,0);
-    // ptr->in = 0;
-    // ptr->out = 0;
+   
 
     do{
 

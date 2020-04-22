@@ -15,6 +15,7 @@
 //gcc sharedProducer.c -o p -lrt
 //gcc sharedConsumer.c -o c -lrt
 
+//-lrt
 
 
 typedef struct{
@@ -31,8 +32,6 @@ int main(){
 
     const int SIZE = 4096;
     const char *name = "OSS";
-    const char *message_0 = "Hello";
-    const char *message_1 = "World!";
     char chat[20];
 
     int shm_fd;
