@@ -163,9 +163,9 @@ void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 		param[t].no_thread = no_thread;
 	}
 
-	for (t = 0; t < no_thread; t++)
-	{
-		pthread_attr_init(&attr[t]);
+	// for (t = 0; t < no_thread; t++)
+	// {
+	// 	pthread_attr_init(&attr[t]);
 		//pthread_attr_setscope(&attr[t], PTHREAD_SCOPE_PROCESS);
 		//pthread_attr_setscope(&attr[t],PTHREAD_SCOPE_SYSTEM);
 		//pthread_attr_setschedpolicy(&attr[t], SCHED_FIFO);
@@ -180,11 +180,11 @@ void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 		// {
 		// 	printf("Kernel mode thread\n");
 		// }
-	}
+	// }
 
 	for (t = 0; t < no_thread; t++)
 	{
-		pthread_create(&tid[t], &attr[t], VectorAdd_Thread, &param[t]);
+		pthread_create(&tid[t], NULL, VectorAdd_Thread, &param[t]);
 		//pthread_cancel(tid[t]);
 		
 	}
