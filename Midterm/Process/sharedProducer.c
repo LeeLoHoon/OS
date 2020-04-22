@@ -12,7 +12,9 @@
 
 #define BUFFER_SIZE 6
 
-//-lrt
+//gcc sharedProducer.c -o p -lrt
+//gcc sharedConsumer.c -o c -lrt
+
 
 
 typedef struct{
@@ -31,8 +33,7 @@ int main(){
     const char *name = "OSS";
     const char *message_0 = "Hello";
     const char *message_1 = "World!";
-    char chat[20],check[20];
-    bool out=false;
+    char chat[20];
 
     int shm_fd;
 

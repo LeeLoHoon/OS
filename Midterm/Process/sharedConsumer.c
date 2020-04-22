@@ -30,6 +30,7 @@ int main(){
     char chat[20]="";
     char ch[20];
     int shm_fd;
+    bool check=false;
 
     entire *ptr;
     
@@ -37,6 +38,8 @@ int main(){
     ftruncate(shm_fd, sizeof(entire));
 
     ptr = mmap(0,sizeof(entire), PROT_WRITE, MAP_SHARED,  shm_fd,0);
+    // ptr->in = 0;
+    // ptr->out = 0;
 
     do{
 
@@ -45,6 +48,7 @@ int main(){
         // ptr->flag[1]=true;
         // ptr->turn=0;
         while(ptr->in==ptr->out);
+        if(check==true) break;
 
         // while(ptr->flag[0] && ptr->turn==0 );
 

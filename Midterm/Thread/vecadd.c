@@ -166,9 +166,9 @@ void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 	for (t = 0; t < no_thread; t++)
 	{
 		pthread_attr_init(&attr[t]);
-		pthread_attr_setscope(&attr[t], PTHREAD_SCOPE_PROCESS);
+		//pthread_attr_setscope(&attr[t], PTHREAD_SCOPE_PROCESS);
 		//pthread_attr_setscope(&attr[t],PTHREAD_SCOPE_SYSTEM);
-		pthread_attr_setschedpolicy(&attr[t], SCHED_FIFO);
+		//pthread_attr_setschedpolicy(&attr[t], SCHED_FIFO);
 		//pthread_attr_setschedpolicy(&attr[t],SCHED_RR);
 
 		// pthread_attr_getscope(&attr[t], &scope);
@@ -185,8 +185,11 @@ void VectorAdd_MT(Vector *vec1, Vector *vec2, Vector *res, int no_thread)
 	for (t = 0; t < no_thread; t++)
 	{
 		pthread_create(&tid[t], &attr[t], VectorAdd_Thread, &param[t]);
-		//pthread_cancel(tid[t]);
+		pthread_cancel(tid[t]);
+		
 	}
+	//print("hi\n");
+	
 
 	for (t = 0; t < no_thread; t++)
 		pthread_join(tid[t], NULL);
@@ -205,20 +208,24 @@ void *VectorAdd_Thread(void *vparam)
 
 	//종료 요청 적용
 
-	// pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
-	// pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
-	// pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+	//pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+	//pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+	//pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+	sleep(3);
+
+	
 
 	for (int i = param->thread_idx; i < vec1->dim; i += param->no_thread)
 	{
 		res->data[i] = vec1->data[i] + vec2->data[i];
+
 		//thread 마다 tls가 생김
-		//tls=i;
+		tls=i;
 	}
 	//Deferred에서 끝내도 되는 분기점
-	//pthread_testcancel();
+	
 
-	//printf("%d\n",tls);
+	printf("%d\n",tls);
 }
 
 // void VectorAdd(Vector *vec1, Vector *vec2, Vector *res)

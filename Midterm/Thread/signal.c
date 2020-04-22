@@ -11,8 +11,8 @@ int main(int argc, char **argv)
 {
   int i = 0;
   //9번 signal 제외하곤 바꿔치기 가능
-  //signal(SIGINT, (void *)sig_handler);
-  signal(SIGQUIT, (void *)sig_handler2);
+  signal(SIGINT, (void *)sig_handler);
+  //signal(SIGQUIT, (void *)sig_handler2);
   while(1)
   {
     printf("%d\n", i);
