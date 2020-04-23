@@ -14,7 +14,6 @@
 
 #define BUFFER_SIZE 256
 
-
 void SwitchCase(int in[], int out[]);
 
 int main()
@@ -59,7 +58,7 @@ int main()
 			message[len] = 0;
 			close(in[READ_END]);
 			close(out[WRITE_END]);
-			write(in[WRITE_END], message, strlen(message)+1);
+			write(in[WRITE_END], message, strlen(message) + 1);
 
 			fp = popen("ps -al", "r");
 			if (fp == NULL)
@@ -106,7 +105,6 @@ int main()
 	}
 
 	return 0;
-
 }
 
 void SwitchCase(int in[], int out[])
@@ -119,7 +117,7 @@ void SwitchCase(int in[], int out[])
 		close(in[WRITE_END]);
 		close(out[READ_END]);
 		read(in[READ_END], buffer, BUFFER_SIZE);
-		//printf("%d\n",len);
+
 		if (strcmp(buffer, "quit") == 0)
 			break;
 		for (int i = 0; i < strlen(buffer); i++)
@@ -131,7 +129,7 @@ void SwitchCase(int in[], int out[])
 			else
 				buffer[i] = toupper(buffer[i]);
 		}
-		write(out[WRITE_END], buffer, strlen(buffer)+1);
+		write(out[WRITE_END], buffer, strlen(buffer) + 1);
 	}
 	close(in[READ_END]);
 	close(out[WRITE_END]);
