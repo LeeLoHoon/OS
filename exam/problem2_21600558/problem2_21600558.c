@@ -1,58 +1,9 @@
-// If the comments are hard to read because of the color,
-// type ':set background=dark'
-
-/***
-
-	This program reads texts and switches the case of the characters (lower case <-> upper case) until the user types "quit".
-
-	Example)
-		Input a text: Welcome!
-		convered text = wELCOME!
-		Input a text: God bless you!
-		convered text = gOD BLESS YOU!
-		Input a text: quit
-		Bye!
-
-	It launches a child process and communicates with it through two ordinary pipes, one to send the original text and the other to receive the converted text.
-
-	Complete the program using ORDINARY PIPES by following the instructions.
-	DO NOT use other IPC such as shared memory or message queue.
-
-	The main creates two pipes and a child process.
-	
-	Then, the parent process repeats the followings until the user types "quit".
-		Read a text line from the user.
-		Send the text to the child through pipe.
-		Receive and display the converted text.
-
-	The child process repeats the followings until it receives "quit" from the parent. 
-		Read a text line from the parent through one pipe.
-		Convert all upper case characters to the corresponding lower case characters and vice versa.
-		Write the converted text to the parent through the other pipe.
-
-	Hint) To read a text line from the user, use the following code.
-			printf("Input a text: ");
-			fgets(src, BUFFER_SIZE - 1, stdin);	
-			int len = strlen(src) - 1;
-			src[len] = 0;				// trim '\n'
-
-	Note! Before the parent terminates, there the child processing MUST terminate.
-		You can check whether the child is still running by check currently running processes by 'ps -al'.
-
-***/
-
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
 #include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/shm.h>
-#include <sys/stat.h>
 #include <stdbool.h>
 
 #define TRUE 1
@@ -63,7 +14,6 @@
 
 #define BUFFER_SIZE 256
 
-#define KEY 8361
 
 void SwitchCase(int in[], int out[]);
 
@@ -77,10 +27,6 @@ int main()
 	pid_t pid;
 	char line[4096];
 	bool check = false;
-
-	//	TO DO: Create two ordinary pipes
-
-	//  TO DO: Create child process
 
 	if (pipe(in) == -1)
 	{
@@ -113,7 +59,7 @@ int main()
 			message[len] = 0;
 			close(in[READ_END]);
 			close(out[WRITE_END]);
-			write(in[WRITE_END], message, strlen(message) + 1);
+			write(in[WRITE_END], message, strlen(message)+1);
 
 			fp = popen("ps -al", "r");
 			if (fp == NULL)
@@ -145,8 +91,8 @@ int main()
 				break;
 			}
 
-			len = read(out[READ_END], message, BUFFER_SIZE);
-			printf("%s\n", message);
+			read(out[READ_END], message, BUFFER_SIZE);
+			printf("Convered text = %s\n", message);
 		}
 
 		close(out[READ_END]);
@@ -161,17 +107,6 @@ int main()
 
 	return 0;
 
-	// On parent process,
-	// Repeats the followings until the user types "quit".
-	// Read a text line from the user.
-	// Send the text to the child through pipe.
-	// Receive and display the converted text.
-
-	// Wait for the child to terminate
-	// Deallocate pipes
-	// Print a good-bye message
-
-	// On child process call SwitchCase(in, out);
 }
 
 void SwitchCase(int in[], int out[])
@@ -183,8 +118,9 @@ void SwitchCase(int in[], int out[])
 	{
 		close(in[WRITE_END]);
 		close(out[READ_END]);
-		len = read(in[READ_END], buffer, BUFFER_SIZE);
-		if (strncmp(buffer, "quit", 4) == 0)
+		read(in[READ_END], buffer, BUFFER_SIZE);
+		//printf("%d\n",len);
+		if (strcmp(buffer, "quit") == 0)
 			break;
 		for (int i = 0; i < strlen(buffer); i++)
 		{
@@ -195,18 +131,8 @@ void SwitchCase(int in[], int out[])
 			else
 				buffer[i] = toupper(buffer[i]);
 		}
-		write(out[WRITE_END], buffer, strlen(buffer) + 1);
+		write(out[WRITE_END], buffer, strlen(buffer)+1);
 	}
 	close(in[READ_END]);
 	close(out[WRITE_END]);
-
-	// TO DO: Implement the following algorithm
-	// Repeats the followings until it receives "quit" from the parent.
-	//	Receive a text line from the parent through pipe in.
-	//	Convert all upper case characters to the corresponding lower case characters and vice versa.
-	// 		You may use isupper(), islower(), toupper(), tolower() functions.
-	//		But DO NOT use other IPC such as shared memory or message queue.
-	//	Send the converted text to the parent through pipe out.
-
-	// TO DO: deallocate pipes;
 }
