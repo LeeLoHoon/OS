@@ -43,7 +43,6 @@ typedef struct
 } ThreadParam;
 
 void InitParam(ThreadParam *param, int width, int height, char c, int no_bar);
-void InitParam2(ThreadParam *param,ThreadParam *oldparam, int width, int height, char c, int no_bar);
 void *MoveBar(void *vparam);
 void DrawBar(int x, int y, int len, char c);
 
@@ -69,13 +68,8 @@ int main(int argc, char *argv[])
 	printf("Press 'q' to quit.\n");
 
 	ThreadParam param[no_bar];
-	for (int i = 0; i < no_bar; i++){
-		if(i==0){
-			InitParam(&param[i], width, height, 'A' + i, no_bar);
-		}
-		else InitParam2(&param[i],&param[i-1] ,width, height, 'A' + i, no_bar);
-	}
-		
+	for (int i = 0; i < no_bar; i++)
+		InitParam(&param[i], width, height, 'A' + i, no_bar);
 
 	pthread_t tid[no_bar];
 	pthread_attr_t attr[no_bar];
@@ -126,27 +120,6 @@ void InitParam(ThreadParam *param, int width, int height, char c, int no_bar)
 	float interval =  param->height / (float)(no_bar + 1);
 
 	param->y = (int)interval * (param->c - 64);
-
-	param->dx = step;
-	if (rand() % 2 == 0)
-		param->dx = -param->dx;
-}
-
-void InitParam2(ThreadParam *param,ThreadParam *oldparam, int width, int height, char c, int no_bar)
-{
-
-	param->width = width;
-	param->height = height;
-	param->c = c;
-	param->len = rand() % 6 + 5; // a random number in [5, 10]
-	int step = rand() % 4 + 2;	 // a random number in [2, 5]
-	param->x = rand() % (param->width - step - 1) + 1;
-
-	// vertical interval between bars = height / (no_bar + 1)
-
-	float interval =  param->height / (float)(no_bar + 1);
-
-	param->y = oldparam->y+ (int)interval;
 
 	param->dx = step;
 	if (rand() % 2 == 0)
