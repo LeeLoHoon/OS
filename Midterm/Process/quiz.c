@@ -19,6 +19,7 @@ typedef struct
 
 Buffer global_buffer;
 
+
 void parent(int shm_id); // function for the parent
 void child(int shm_id);	 // function for the child
 
@@ -33,6 +34,7 @@ int main(int argc, char *argv[0])
 		printf("메모리 생성 실패\n");
 		return 0;
 	}
+	
 
 	//새로운 프로세스 형성 
 	//child process는 child_pid = 0 이고 parent process는 child_pid > 0

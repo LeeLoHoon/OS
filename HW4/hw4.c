@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 		no_thread = 5;				// default value of <# of threads>
 
 	srand(time(NULL));
-
+	
 	int width = getWindowWidth();
 	int height = getWindowHeight() - 1;
 	int t = 0;						// thread index

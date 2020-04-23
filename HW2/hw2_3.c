@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 
 #define MAX_CMD 2048
