@@ -146,7 +146,7 @@ void InitParam2(ThreadParam *param,ThreadParam *oldparam, int width, int height,
 
 	float interval =  param->height / (float)(no_bar + 1);
 
-	param->y = oldparam->y+1+ (int)interval;
+	param->y = oldparam->y+ (int)interval;
 
 	param->dx = step;
 	if (rand() % 2 == 0)
