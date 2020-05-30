@@ -1,16 +1,12 @@
+#include <pthread.h>
+#include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-
-#include <unistd.h>
-#include <pthread.h>
-
-#include <sys/types.h>
 #include <sys/ipc.h>
-#include <semaphore.h>
-
-
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
 
 #define BUFFER_SIZE 5
 #define MAX_MESSAGE 64
@@ -23,27 +19,22 @@ int empty_num, full_num;
 
 int repeat = 1;
 
-
 void DisplayBuffer();
 void *Producer();
 void *Consumer();
-
 
 int main(int argc, char *argv[])
 {
 
     int duration;
-    // printf("%d\n",argc);
-
     if (argc < 2)
         duration = 30;
 
     else
         duration = atoi(argv[1]);
-    // if(no_thread == 0)				// for safety
-    // 	no_thread = 5;				// default value of <# of threads>
 
     srand(time(NULL));
+
     sem_init(&empty, 0, BUFFER_SIZE);
     sem_init(&full, 0, 0);
     pthread_mutex_init(&mutex, NULL);
@@ -62,6 +53,7 @@ int main(int argc, char *argv[])
     sleep(duration);
 
     repeat = 0;
+
     if (sem_getvalue(&full, &full_num) == 0)
     {
         sem_post(&full);
@@ -94,92 +86,60 @@ void *Producer()
         "You are so precious!",
         "Hakuna matata!"};
     do
-    {   
-        int num = rand()%10;
+    {
         sleep(rand() % 3 + 1);
         char item[MAX_MESSAGE];
-        strcpy(item,messages[num]);
-        printf("[Producer] Created a message \"%s \" \n",item);
-        
+        int num = rand() % 10;
+        strcpy(item, messages[num]);
+        printf("[Producer] Created a message \"%s \" \n", item);
+
         sem_wait(&empty);
-        // printf("sem wait pass\n");
         pthread_mutex_lock(&mutex);
-        // printf("mutex lock pass\n");
-        
 
-         printf("---------------------- PRODUCER ------------------------\n");
-
+        printf("---------------------- PRODUCER ------------------------\n");
         printf("Producer is entering critical section.\n");
-
-        strcpy(buffer[in],item);
-        printf("[Producer] \"%s\" ==> buffer\n",item);
-        in=(in+1)%BUFFER_SIZE;
+        strcpy(buffer[in], item);
+        printf("[Producer] \"%s\" ==> buffer\n", item);
+        in = (in + 1) % BUFFER_SIZE;
         count++;
         DisplayBuffer();
+        printf("Producer is leaving critical section.\n");
+        printf("--------------------------------------------------------\n");
 
-         printf("Producer is leaving critical section.\n");
-        
-        
-       
-        
-         printf("--------------------------------------------------------\n");
-         pthread_mutex_unlock(&mutex);
-        //  printf("mutex unlock pass\n");
-        
+        pthread_mutex_unlock(&mutex);
         sem_post(&full);
-        //  printf("sem post pass\n");
-        
-        
-
-
-
-        
-
     } while (repeat == 1);
+
+    pthread_exit(0);
 }
 
 void *Consumer()
 {
     do
     {
-    
-        char mesg[MAX_MESSAGE]; 
+        char mesg[MAX_MESSAGE];
+
         sem_wait(&full);
-        // printf("sem wait pass\n");
         pthread_mutex_lock(&mutex);
-        // printf("mutex lock pass\n");
-        
-        
-         printf("--------------------- CONSUMER -------------------------\n");
 
-         printf("Consumer is entering critical section.\n");
-
-        strcpy(mesg,buffer[out]);
-        printf("[Consumer] buffer ==> \"%s\" ==> buffer\n",mesg);
-        out=(out+1)%BUFFER_SIZE;
+        printf("--------------------- CONSUMER -------------------------\n");
+        printf("Consumer is entering critical section.\n");
+        strcpy(mesg, buffer[out]);
+        printf("[Consumer] buffer ==> \"%s\" ==> buffer\n", mesg);
+        out = (out + 1) % BUFFER_SIZE;
         count--;
-        // printf("%s\n",mesg);
         DisplayBuffer();
         printf("Consumer is leaving critical section.\n");
-       
-       
-        
-        
-    
         printf("--------------------------------------------------------\n");
-        
+
         pthread_mutex_unlock(&mutex);
-        // printf("mutex unlock pass\n");
         sem_post(&empty);
-        // printf("sem post pass\n");        
-        printf("[Consumer] Consumed a message \"%s\" \n",mesg);
 
+        printf("[Consumer] Consumed a message \"%s\" \n", mesg);
         sleep(rand() % 3 + 2);
-
-
     } while (repeat == 1);
+    pthread_exit(0);
 }
-
 
 void DisplayBuffer()
 {
