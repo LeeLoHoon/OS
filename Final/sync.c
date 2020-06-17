@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
     sleep(duration);
 
-    repeat = 0;
+	repeat = 0;
 
     if (sem_getvalue(&full, &full_num) == 0)
     {
