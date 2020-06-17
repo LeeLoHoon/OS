@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdbool.h>
+#include <sys/wait.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -26,6 +27,7 @@ int main()
 	pid_t pid;
 	char line[4096];
 	bool check = false;
+	int status;
 
 	if (pipe(in) == -1)
 	{
@@ -49,8 +51,14 @@ int main()
 	else if (pid > 0)
 	{
 
+		int wid;
+
 		while (1)
 		{
+
+			wid = waitpid(pid, NULL, WNOHANG);
+			if (wid != 0)
+				break;
 
 			printf("Input a text: ");
 			fgets(message, BUFFER_SIZE - 1, stdin);
@@ -60,37 +68,18 @@ int main()
 			close(out[WRITE_END]);
 			write(in[WRITE_END], message, strlen(message) + 1);
 
-			fp = popen("ps -al", "r");
-			if (fp == NULL)
-			{
-				fprintf(stderr, "popen failed\n");
-				exit(1);
-			}
-			while (fgets(line, 4096, fp) != NULL)
-			{
-				int i = 0;
-				char *ptr = strtok(line, " ");
-				while (ptr != NULL)
-				{
-					split[i] = ptr;
-					i++;
-					ptr = strtok(NULL, " ");
-				}
-				if (strcmp(split[0], "1") == 0)
-					if (strncmp(split[i - 1], "<defunct>", 8) == 0)
-					{
-						check = true;
-						break;
-					}
-			}
-			pclose(fp);
-
-			if (check == true)
-			{
-				break;
-			}
+			// fp = popen("ps -al", "r");
+			// if (fp == NULL)
+			// {
+			// 	fprintf(stderr, "popen failed\n");
+			// 	exit(1);
+			// }
+			// while (fgets(line, 4096, fp) != NULL) printf("%s\n",line);
+			// pclose(fp);
 
 			read(out[READ_END], message, BUFFER_SIZE);
+			if (strcmp(message, "quit") == 0)
+				break;
 			printf("Convered text = %s\n", message);
 		}
 
@@ -103,7 +92,6 @@ int main()
 		SwitchCase(in, out);
 		exit(3);
 	}
-
 	return 0;
 }
 
