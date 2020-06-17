@@ -56,11 +56,22 @@ int main(int argc, char *argv[])
 
     if (sem_getvalue(&full, &full_num) == 0)
     {
-        sem_post(&full);
+        printf("success getFull\n");
+        printf("full_num:%d\n",full_num);
     }
+    if(full_num==BUFFER_SIZE){
+        sem_post(&full);
+        printf("success postFull\n");
+    }
+
     if (sem_getvalue(&empty, &empty_num) == 0)
     {
+        printf("success getEmpty\n");
+        printf("empty_num:%d\n",empty_num);
+    }
+    if(empty_num==BUFFER_SIZE){
         sem_post(&empty);
+        printf("success postempty\n");
     }
 
     pthread_join(pro, NULL);
@@ -87,7 +98,7 @@ void *Producer()
         "Hakuna matata!"};
     do
     {
-        sleep(rand() % 3 + 1);
+        sleep(rand() % 3 + 2);
         char item[MAX_MESSAGE];
         int num = rand() % 10;
         strcpy(item, messages[num]);
@@ -136,7 +147,7 @@ void *Consumer()
         sem_post(&empty);
 
         printf("[Consumer] Consumed a message \"%s\" \n", mesg);
-        sleep(rand() % 3 + 2);
+        sleep(rand() % 3 + 1);
     } while (repeat == 1);
     pthread_exit(0);
 }
