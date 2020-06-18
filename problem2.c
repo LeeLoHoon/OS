@@ -65,7 +65,7 @@ critical section, but no writer can.
 
 #include <unistd.h>
 #include <pthread.h>
-
+#include <semaphore.h>
 #define TRUE 1
 #define FALSE 0
 
@@ -143,6 +143,19 @@ int main(int argc, char *argv[])
 	
 	NoticeBoard board = { 0 };
 	InitNoticeBoard(&board, 256);
+		
+	ThreadParam wparm[no_writer];
+	ThreadParam rparm[no_reader];
+	
+	pthread_t read[no_reader],write[no_writer];
+	
+	pthread_attr_t read_attr[no_reader],write_attr[no_writer];
+
+	for(int i; i<no_reader; i++){
+		pthread_create(&read[i],&read_attr[i],Reader,&rparm[i]);
+		pthread_create(&write[i],&write_attr[i],Writer,&wparm[i]);
+	}				
+
 	
 	// TO DO: launch writer threads using Writer()
 
@@ -252,9 +265,11 @@ void InitNoticeBoard(NoticeBoard *board, int max_len)
 
 	board->reader_in_cs = 0;
 	board->writer_in_cs = 0;
-
+	
+	pthread_mutex_init(&(board->mutex_wcs,NULL);
+	pthread_mutex_init(&(board->mutex_rcs,NULL);
 	// TO DO: initialize mutex_rcs and mutex_wcs
-
+	
 
 	// TO DO: initialize or create fields and objects or synchronization
 
@@ -264,12 +279,18 @@ void InitNoticeBoard(NoticeBoard *board, int max_len)
 void DestroyNoticeBoard(NoticeBoard *board)
 // TO DO: implement this function.
 {
+	phtread_mutex_destroy(&(board->mutex_rcs));
+	pthread_mutex_destroy(&(board->mutex_wcs));
+
 	// TO DO: deallocate all memory blocks and synchronization objects
 }
 
 void WriteMessage(NoticeBoard *board, const char *mesg, int thread_id)
 // TO DO: complete this function by implementing the entry and exit sections
 {
+	
+	pthread_mutex_lock(&(board->mutex_wcs));
+	
 	AddWriterInCS(board, 1);
 
 	printf("[Writer %d] Writing message \"%s\". (writer:reader = %d:%d)\n", thread_id, mesg, board->writer_in_cs, board->reader_in_cs);
@@ -281,11 +302,14 @@ void WriteMessage(NoticeBoard *board, const char *mesg, int thread_id)
 	msleep(rand() % 2000 + 1000);				// wait for 1000 ~ 3000 msec.
 
 	AddWriterInCS(board, -1);
+	pthread_mutex_unlock(&(board->mutex_wcs));
 }
 
 void ReadMessage(NoticeBoard *board, char *mesg, int max_len, int thread_id)
-// TO DO: complete this function by implementing the entry and exit sections
+// TO DO: complete this function by implementing thie entry and exit sections
 {
+	
+	pthread_mutex_lock(&board->mutex_rcs);
 	AddReaderInCS(board, 1);
 
 	strncpy(mesg, board->message, max_len);
@@ -298,11 +322,13 @@ void ReadMessage(NoticeBoard *board, char *mesg, int max_len, int thread_id)
 	msleep(rand() % 3000 + 1000);			// wait for 1~4 sec.
 
 	AddReaderInCS(board, -1);
+	pthread_mutex_unlock(&board->mutex_rcs);
 }
 
 void ReleaseThreads(NoticeBoard *board, int count)
 // TO DO: implement this function.
 {
+	
 	// TO DO: unlock all mutex (and rwlocks) of board count times
 	//        to release the threads that might be waiting for a mutex (or an rwlock)
 }
