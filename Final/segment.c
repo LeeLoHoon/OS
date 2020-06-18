@@ -120,6 +120,7 @@ int ReadPageTable(const char *filename, PageTable *pt)
 	int i=1;
 	while(!feof(fp)){
 		fgets(buffer,sizeof(buffer),fp);
+		if(feof(fp)==1) break;
 		ptr=strtok(buffer," ");
 		pt->limit_number = (int *)realloc(pt->limit_number,(i+1)*sizeof(int));
 		pt->limit_number[i] = atoi(ptr);
@@ -135,6 +136,7 @@ int ReadPageTable(const char *filename, PageTable *pt)
 		i++;
 
 		printf("%d\n",i);
+		ptr=NULL;
 		//입력값이 table 길이보다 많다면 그만하기
 		if(i>=pt->page_table_length) break;
 	}
